@@ -7,12 +7,12 @@ Battle-tested Claude Code plugins from daily workflows.
 Add this marketplace to Claude Code:
 
 ```bash
-/plugin marketplace add yourusername/channel47-marketplace
+/plugin marketplace add ctrlswing/channel47-marketplace
 ```
 
 ## Available Plugins
 
-Coming soon.
+- [Google Ads MCP](https://channel47.dev/plugins/google-ads) - Query Google Ads data using GaQL
 
 ## Philosophy
 
