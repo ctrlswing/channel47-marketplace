@@ -67,3 +67,44 @@ Now all skills use your custom guide by default.
 - Use `/remove-ai-tells` to quickly clean AI-generated drafts
 - Create multiple style guides for different content types
 - Override settings with `--style-guide` for one-off variations
+
+## Troubleshooting
+
+### Custom style guide not loading
+
+Check that the path in `.claude/creative-writing.local.md` is correct and the file exists:
+
+```bash
+cat .claude/creative-writing.local.md
+```
+
+Verify the `custom_style_guide` path matches your file location.
+
+### Skills using wrong style guide
+
+Skills check for style guides in this order:
+
+1. `--style-guide` parameter (highest priority)
+2. `.claude/creative-writing.local.md` setting
+3. Default style guide (fallback)
+
+Use `--style-guide` to override for one-off tasks.
+
+### Generated content still has AI patterns
+
+Try:
+
+1. Run `/remove-ai-tells` to clean common patterns
+2. Use `/review-writing` to identify specific issues
+3. Update your custom style guide to emphasize patterns you want to avoid
+4. Run `/edit-draft` for a full rewrite
+
+### Want to reset to defaults
+
+Remove or comment out custom_style_guide in `.claude/creative-writing.local.md`:
+
+```yaml
+---
+custom_style_guide: null  # back to default
+---
+```

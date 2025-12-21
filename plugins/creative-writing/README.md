@@ -45,6 +45,23 @@ custom_style_guide: docs/my-style-guide.md
 
 All skills accept `--style-guide <path>` to override defaults.
 
+## Examples
+
+See `examples/my-style-guide.md` for a sample custom style guide tailored to technical writing.
+
+## How It Works
+
+The plugin uses smart chunking to load only relevant style guide sections per skill:
+
+- `/edit-draft`: Loads Voice, Structure, Word Choice, Patterns to Avoid, Quick Reference
+- `/review-writing`: Loads Quick Reference and Patterns to Avoid
+- `/improve-opening`: Loads Voice Principles and Patterns to Avoid
+- `/strengthen-ending`: Loads Endings and Patterns to Avoid
+- `/remove-ai-tells`: Loads full Patterns to Avoid table
+- `/generate-content`: Loads full style guide
+
+This keeps token usage efficient while maintaining quality.
+
 ## License
 
 MIT
