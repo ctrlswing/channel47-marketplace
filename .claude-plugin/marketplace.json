@@ -5,18 +5,28 @@
     "url": "https://channel47.dev"
   },
   "description": "Battle-tested Claude Code plugins from daily workflows",
-  "metadata": {
-    "pluginRoot": "./plugins"
-  },
   "plugins": [
     {
       "name": "google-ads",
-      "source": "google-ads",
+      "source": "./plugins/google-ads",
       "description": "Query Google Ads data using GaQL with OAuth authentication",
       "version": "1.0.0",
-      "author": "Jackson",
+      "author": {
+        "name": "Jackson"
+      },
       "category": "marketing",
       "tags": ["google-ads", "marketing", "analytics", "mcp"]
+    },
+    {
+      "name": "creative-writing",
+      "source": "./plugins/creative-writing",
+      "description": "Writing assistant for editing, generating, and improving prose",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jackson"
+      },
+      "category": "writing",
+      "tags": ["writing", "editing", "prose", "creative"]
     }
   ]
 }
