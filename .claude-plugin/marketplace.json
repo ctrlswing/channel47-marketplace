@@ -16,17 +16,6 @@
       },
       "category": "marketing",
       "tags": ["google-ads", "marketing", "analytics", "mcp"]
-    },
-    {
-      "name": "creative-writing",
-      "source": "./plugins/creative-writing",
-      "description": "Writing assistant for editing, generating, and improving prose",
-      "version": "1.0.0",
-      "author": {
-        "name": "Jackson"
-      },
-      "category": "writing",
-      "tags": ["writing", "editing", "prose", "creative"]
     }
   ]
 }
