@@ -1,0 +1,39 @@
+---
+preferred_tone: conversational
+target_audience: general
+content_types:
+  - blog posts
+  - technical writing
+  - essays
+custom_style_guide: null  # or path like "docs/my-style-guide.md"
+---
+
+# My Writing Preferences
+
+This is a template for customizing the creative-writing plugin. Copy this file to `.claude/creative-writing.local.md` to activate your custom settings.
+
+## Configuration Options
+
+**preferred_tone**: Set your default tone (conversational, formal, authoritative, humble, technical, accessible)
+
+**target_audience**: Define your primary audience (general, technical peers, executives, customers, etc.)
+
+**content_types**: List the types of content you typically write (blog posts, technical writing, essays, emails, documentation, marketing, etc.)
+
+**custom_style_guide**: Point to your own style guide file, or leave as `null` to use the default guide
+
+## Custom Style Guide
+
+If you want to use a completely custom style guide instead of the default:
+
+1. Create your style guide file (e.g., `docs/my-style-guide.md`)
+2. Set `custom_style_guide: docs/my-style-guide.md` in the frontmatter above
+3. All skills will use your custom guide by default
+
+You can still override this per-skill using the `--style-guide <path>` parameter.
+
+## Supplemental Guidance
+
+Add any additional style notes below this section. These will supplement (not replace) your chosen style guide.
+
+[Add your personal style notes here]
