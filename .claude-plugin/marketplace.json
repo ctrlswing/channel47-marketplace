@@ -1,0 +1,12 @@
+{
+  "name": "channel47",
+  "owner": {
+    "name": "Jackson",
+    "url": "https://channel47.dev"
+  },
+  "description": "Battle-tested Claude Code plugins from daily workflows",
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": []
+}
