@@ -8,5 +8,15 @@
   "metadata": {
     "pluginRoot": "./plugins"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "google-ads",
+      "source": "google-ads",
+      "description": "Query Google Ads data using GaQL with OAuth authentication",
+      "version": "1.0.0",
+      "author": "Jackson",
+      "category": "marketing",
+      "tags": ["google-ads", "marketing", "analytics", "mcp"]
+    }
+  ]
 }

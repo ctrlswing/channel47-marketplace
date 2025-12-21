@@ -1,0 +1,17 @@
+{
+  "name": "google-ads",
+  "version": "1.0.0",
+  "description": "Query Google Ads data using GaQL with OAuth authentication",
+  "author": {
+    "name": "Jackson",
+    "url": "https://channel47.dev"
+  },
+  "homepage": "https://channel47.dev/plugins/google-ads",
+  "repository": "https://github.com/yourusername/channel47-marketplace",
+  "mcp": {
+    "configFile": ".mcp.json"
+  },
+  "requirements": {
+    "python": ">=3.10"
+  }
+}
