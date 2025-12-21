@@ -1,0 +1,18 @@
+# .github/workflows/trigger-vercel.yml
+name: Trigger Vercel Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.claude-plugin/marketplace.json'
+      - 'plugins/**'
+
+jobs:
+  trigger-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Deploy Hook
+        run: |
+          curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
