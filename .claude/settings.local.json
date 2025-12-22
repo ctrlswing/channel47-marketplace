@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(superpowers:brainstorming)",
+      "Bash(mkdir:*)",
+      "Skill(superpowers:writing-plans)",
+      "Skill(superpowers:subagent-driven-development)",
+      "Bash(git -C /Users/jackson/Documents/Access/1/a_projects/channel47-marketplace log -1 --stat)",
+      "Bash(tree:*)",
+      "Bash(python3:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git show:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(wc:*)",
+      "Bash(git tag:*)",
+      "Bash(git checkout:*)",
+      "Bash(ls:*)",
+      "Bash(git cherry-pick:*)",
+      "Bash(git pull:*)",
+      "Skill(superpowers:systematic-debugging)"
+    ]
+  }
+}

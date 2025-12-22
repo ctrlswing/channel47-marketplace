@@ -26,7 +26,7 @@ This skill creates first drafts that match style guide principles.
 Check for style guide in this order:
 1. `--style-guide` parameter (if provided)
 2. `.claude/creative-writing.local.md` custom_style_guide setting
-3. Default style guide at `.claude-plugin/default-style-guide.md`
+3. Default style guide at `default-style-guide.md`
 
 Load ALL sections (full guide) for generation.
 

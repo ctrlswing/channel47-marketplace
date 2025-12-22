@@ -22,7 +22,7 @@ Specialized skill for fixing the first 1-3 paragraphs.
 Check for style guide in this order:
 1. `--style-guide` parameter (if provided)
 2. `.claude/creative-writing.local.md` custom_style_guide setting
-3. Default style guide at `.claude-plugin/default-style-guide.md`
+3. Default style guide at `default-style-guide.md`
 
 **Step 2: Extract relevant chunks**
 

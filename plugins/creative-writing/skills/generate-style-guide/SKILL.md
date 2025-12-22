@@ -11,7 +11,7 @@ Interactive questionnaire that creates personalized style guides.
 
 **Step 1: Load default guide as template**
 
-Read `.claude-plugin/default-style-guide.md` to use as structure template.
+Read `default-style-guide.md` to use as structure template.
 
 **Step 2: Ask content formats**
 
