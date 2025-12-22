@@ -16,6 +16,17 @@
       },
       "category": "writing",
       "tags": ["writing", "editing", "prose", "creative"]
+    },
+    {
+      "name": "google-ads",
+      "source": "./plugins/google-ads",
+      "description": "Query Google Ads data using GAQL with OAuth authentication",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jackson"
+      },
+      "category": "marketing",
+      "tags": ["google-ads", "gaql", "marketing", "analytics", "ppc"]
     }
   ]
 }
