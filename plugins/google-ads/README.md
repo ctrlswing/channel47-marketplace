@@ -1,6 +1,6 @@
 # Google Ads MCP Plugin
 
-Query Google Ads data using GaQL with OAuth authentication.
+Query Google Ads data using GAQL with OAuth authentication.
 
 ## Quick Start
 
@@ -9,15 +9,42 @@ Query Google Ads data using GaQL with OAuth authentication.
    /plugin install google-ads@channel47
    ```
 
-2. Set up OAuth credentials (see [GETTING_STARTED.md](GETTING_STARTED.md))
+2. Run setup wizard:
+   ```bash
+   /setup
+   ```
 
-3. Configure environment variables in Claude Code settings
+3. Try it out:
+   ```
+   "List my Google Ads accounts"
+   "Find negative keyword opportunities for account 1234567890"
+   ```
 
-## Tools Available
+## What's Included
 
-- List Google Ads accounts
-- Execute GaQL queries
-- Analyze campaign performance
+- **MCP Server** - Two essential tools:
+  - List all accessible Google Ads accounts
+  - Execute any GAQL query for custom analysis
+
+- **Agent** - Negative Keyword Hunter
+  - Analyzes search terms to identify wasted spend
+  - Recommends negative keywords to add
+  - Prioritizes by budget impact
+
+- **Skill** - GAQL Query Guide
+  - Reference for constructing effective queries
+  - Field compatibility rules
+  - Common query patterns
+
+- **Command** - `/setup`
+  - Interactive credential configuration wizard
+
+## Requirements
+
+- Python 3.10+
+- Google Ads account with MCC access
+- Google Cloud project with Ads API enabled
+- OAuth 2.0 credentials
 
 ## Documentation
 
