@@ -8,10 +8,5 @@
   },
   "homepage": "https://channel47.dev/plugins/google-ads",
   "repository": "https://github.com/ctrlswing/channel47-marketplace",
-  "mcp": {
-    "configFile": ".mcp.json"
-  },
-  "requirements": {
-    "python": ">=3.10"
-  }
+  "mcpServers": "./.mcp.json"
 }
