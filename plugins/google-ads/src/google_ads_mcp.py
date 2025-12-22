@@ -102,7 +102,7 @@ def get_google_ads_client(customer_id: Optional[str] = None) -> GoogleAdsClient:
     credentials = Credentials(
         None,
         refresh_token=refresh_token,
-        token_uri="https://accounts.google.com/o/oauth2/token",
+        token_uri="https://oauth2.googleapis.com/token",
         client_id=client_id,
         client_secret=client_secret,
         scopes=['https://www.googleapis.com/auth/adwords']

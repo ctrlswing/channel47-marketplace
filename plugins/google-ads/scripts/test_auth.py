@@ -95,7 +95,7 @@ def test_authentication():
         credentials = Credentials(
             None,
             refresh_token=os.getenv("GOOGLE_ADS_REFRESH_TOKEN"),
-            token_uri="https://accounts.google.com/o/oauth2/token",
+            token_uri="https://oauth2.googleapis.com/token",
             client_id=os.getenv("GOOGLE_ADS_CLIENT_ID"),
             client_secret=os.getenv("GOOGLE_ADS_CLIENT_SECRET"),
             scopes=['https://www.googleapis.com/auth/adwords']

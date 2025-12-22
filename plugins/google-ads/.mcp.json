@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "google-ads": {
-      "command": "python",
+      "command": "python3",
       "args": ["${CLAUDE_PLUGIN_ROOT}/src/google_ads_mcp.py"],
       "env": {
         "GOOGLE_ADS_DEVELOPER_TOKEN": "",
