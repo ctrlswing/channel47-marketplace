@@ -13,7 +13,7 @@ Add this marketplace to Claude Code:
 ## Available Plugins
 
 - [Creative Writing](https://channel47.dev/plugins/creative-writing) - Writing assistant for editing and improving prose
-- [Google Ads MCP](https://channel47.dev/plugins/google-ads) - Query Google Ads data using GaQL
+- [Google Ads](https://channel47.dev/plugins/google-ads) - Query Google Ads data using GAQL with OAuth authentication
 
 ## Philosophy
 
