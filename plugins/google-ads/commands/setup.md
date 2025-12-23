@@ -6,6 +6,20 @@ description: Interactive guide for setting up Google Ads API credentials
 
 This command guides you through configuring OAuth credentials for the Google Ads plugin.
 
+## What You'll Need
+
+This setup wizard will help you configure these 5 environment variables:
+
+1. **GOOGLE_ADS_DEVELOPER_TOKEN** - Your Google Ads API developer token (from Google Ads API Center)
+2. **GOOGLE_ADS_LOGIN_CUSTOMER_ID** - Your MCC (Manager) account ID (10 digits)
+3. **GOOGLE_ADS_CLIENT_ID** - OAuth 2.0 client ID (from Google Cloud Console)
+4. **GOOGLE_ADS_CLIENT_SECRET** - OAuth 2.0 client secret (from Google Cloud Console)
+5. **GOOGLE_ADS_REFRESH_TOKEN** - OAuth refresh token (generated during this setup)
+
+These will be saved to your Claude Code settings file (`~/.claude/settings.json` or project-specific).
+
+---
+
 ## Phase 1: Prerequisites Check
 
 First, let me verify your environment:
@@ -63,32 +77,98 @@ I'll walk you through setting up your Google Cloud project and OAuth credentials
 
 **If YES:** ✓ API is ready.
 
-### Have you created OAuth 2.0 credentials?
+### Step 1: Configure OAuth Consent Screen (Required First)
 
-**If NO:**
+Before creating credentials, you must configure the consent screen:
+
+**If you've already configured and published the consent screen:**
+✓ Skip to Step 2
+
+**If not configured yet:**
+
+1. Go to "APIs & Services" → "OAuth consent screen"
+2. Select **User Type: External**, then click "Create"
+3. Fill in required fields:
+   - **App name:** "Google Ads MCP"
+   - **User support email:** your email
+   - **Developer contact:** your email
+4. Click "Save and Continue" through remaining screens (Scopes, Test users)
+5. **CRITICAL:** Click "Publish App" on the final screen
+   - Don't leave in Testing mode or tokens expire in 7 days
+   - Publishing is instant for External apps with no sensitive scopes
+
+Respond with 'done' when consent screen is configured and published.
+
+**[Wait for user confirmation]**
+
+---
+
+### Step 2: Create OAuth Client ID
+
+Now create the OAuth credentials:
+
+**If you've already created desktop app credentials:**
+✓ You should have the downloaded JSON file
+
+**If not created yet:**
+
 1. Go to "APIs & Services" → "Credentials"
 2. Click "Create Credentials" → "OAuth client ID"
-3. If prompted, configure OAuth consent screen:
-   - User type: External
-   - App name: "Google Ads MCP"
-   - User support email: your email
-   - Developer contact: your email
-   - Click "Save and Continue" through remaining screens
-   - **Important:** Publish the app (don't leave in Testing mode or tokens expire in 7 days)
-4. Back to Create OAuth client ID:
-   - Application type: "Desktop app"
-   - Name: "Google Ads MCP Client"
-   - Click "Create"
-5. **Download JSON** - Click "DOWNLOAD JSON" button
-6. Save file as `client_secrets.json`
+3. Select **Application type: Desktop app**
+4. Name: "Google Ads MCP Client"
+5. Click "Create"
+6. **IMPORTANT:** Click "DOWNLOAD JSON" button
+7. Save the file (default name is long, you don't need to rename it)
 
-**If YES:** ✓ You should have a client_secrets.json file.
+### Locating your OAuth credentials file
 
-### Where did you save client_secrets.json?
+Let me search for recently downloaded OAuth credential files...
+
+**Searching common locations...**
+
+Run:
+```bash
+find ~/Downloads ~/Desktop . -maxdepth 1 -name "client_secret*.json" -type f -mtime -7 2>/dev/null | \
+  while read -r file; do
+    mod_time=$(stat -f "%Sm" -t "%Y-%m-%d %H:%M" "$file" 2>/dev/null || stat -c "%y" "$file" 2>/dev/null | cut -d' ' -f1-2)
+    echo "$mod_time|$file"
+  done | sort -r
+```
+
+**If 1 file found:**
+
+✓ Found: `[FILEPATH]`
+  Modified: [TIMESTAMP]
+
+Use this file?
+
+**[Wait for user: yes/no]**
+
+If YES: Continue to validation
+If NO: Ask for custom path below
+
+**If multiple files found:**
+
+Found multiple OAuth credential files:
+```
+1. [FILE1] (modified: [TIME1])
+2. [FILE2] (modified: [TIME2])
+3. [FILE3] (modified: [TIME3])
+```
+
+Which file should I use?
+
+**[Wait for user: 1/2/3 or custom path]**
+
+**If none found or user provides custom path:**
+
+I didn't find any OAuth credential files, or you want to use a different location.
 
 Please provide the full path to your client_secrets.json file:
 
 **[Wait for user input]**
+
+---
 
 **Validating file...**
 
@@ -229,11 +309,87 @@ I'll guide you to save these environment variables.
 
 **Your choice:** [Wait for user input: user/project/local]
 
-**Based on your choice, add these to your settings file:**
+**I'll automatically save these credentials to your settings file.**
 
-File to edit: `~/.claude/settings.json` (or project/local based on choice)
+Preview of environment variables to add:
+```
+GOOGLE_ADS_DEVELOPER_TOKEN: [FIRST_3_CHARS]...[LAST_3_CHARS]
+GOOGLE_ADS_LOGIN_CUSTOMER_ID: [FULL_MCC_ID]
+GOOGLE_ADS_CLIENT_ID: [FIRST_10_CHARS]...[apps.googleusercontent.com]
+GOOGLE_ADS_CLIENT_SECRET: GOCSPX-...[LAST_4_CHARS]
+GOOGLE_ADS_REFRESH_TOKEN: 1//0...[LAST_4_CHARS]
+```
 
-Add this JSON (merge with existing content if file exists):
+Target file: `[SETTINGS_FILE_PATH]`
+
+Proceed with writing to `[SETTINGS_FILE_PATH]`?
+
+**[Wait for user: yes/no]**
+
+---
+
+**If YES - Automatic Save:**
+
+**Step 1: Backup existing settings (if file exists)**
+
+Run:
+```bash
+SETTINGS_FILE="[PATH]"
+if [ -f "$SETTINGS_FILE" ]; then
+  cp "$SETTINGS_FILE" "${SETTINGS_FILE}.backup.$(date +%Y%m%d_%H%M%S)"
+  echo "✓ Backed up existing settings"
+fi
+```
+
+**Step 2: Merge environment variables**
+
+Run:
+```bash
+SETTINGS_FILE="[PATH]"
+
+# Read existing settings or create empty object
+if [ -f "$SETTINGS_FILE" ]; then
+  EXISTING=$(cat "$SETTINGS_FILE")
+else
+  EXISTING='{}'
+fi
+
+# Merge new env vars using Python
+python3 -c "
+import json
+import sys
+
+existing = json.loads('''$EXISTING''')
+if 'env' not in existing:
+    existing['env'] = {}
+
+existing['env']['GOOGLE_ADS_DEVELOPER_TOKEN'] = '[TOKEN]'
+existing['env']['GOOGLE_ADS_LOGIN_CUSTOMER_ID'] = '[MCC_ID]'
+existing['env']['GOOGLE_ADS_CLIENT_ID'] = '[CLIENT_ID]'
+existing['env']['GOOGLE_ADS_CLIENT_SECRET'] = '[CLIENT_SECRET]'
+existing['env']['GOOGLE_ADS_REFRESH_TOKEN'] = '[REFRESH_TOKEN]'
+
+print(json.dumps(existing, indent=2))
+" > "$SETTINGS_FILE"
+
+echo "✓ Credentials saved to $SETTINGS_FILE"
+```
+
+Expected: "✓ Credentials saved to [PATH]"
+
+**Verification:**
+
+Run: `cat [SETTINGS_FILE_PATH] | python3 -m json.tool | grep GOOGLE_ADS | wc -l`
+
+Expected: 5 (all 5 env vars present)
+
+---
+
+**If NO - Manual Save:**
+
+Cancelled automatic save. Here's the JSON to add manually:
+
+File to edit: `[SETTINGS_FILE_PATH]`
 
 ```json
 {
@@ -247,15 +403,11 @@ Add this JSON (merge with existing content if file exists):
 }
 ```
 
-**Would you like me to open the settings file for you?**
+**If the file already exists,** merge the `env` section with your existing settings.
 
-If YES:
-Run: `code ~/.claude/settings.json` (or other editor based on availability)
+After you've saved the settings file manually, respond with 'done'.
 
-If NO:
-"Please manually edit the file at [path] and add the JSON above."
-
-**After you've saved the settings file, respond with 'done'.**
+**[Wait for user confirmation]**
 
 [Wait for user confirmation]
 
@@ -263,36 +415,139 @@ If NO:
 
 ## Phase 8: Verification
 
-**Important: Restart Claude Code now for settings to take effect.**
+⚠️ **IMPORTANT: Restart Claude Code now**
 
-After restarting, let's verify your configuration works:
+Your credentials are saved, but Claude Code needs to restart to load them into the environment.
 
-Run: `cd ${CLAUDE_PLUGIN_ROOT}/scripts && python test_auth.py`
+**Steps to restart:**
+1. Exit Claude Code completely:
+   - Press `Ctrl+C` (Linux/Windows) or `Cmd+Q` (Mac)
+   - Or type `exit` if in a shell
+2. Wait 2-3 seconds for complete shutdown
+3. Start Claude Code again: `claude code`
+4. Return to this conversation: Navigate back or use session history
+
+After restarting Claude Code completely, respond with 'done' and I'll verify automatically.
+
+**[Wait for user to restart and respond with 'done']**
+
+---
+
+**Checking if environment variables are loaded...**
+
+Run:
+```bash
+if [ -n "$GOOGLE_ADS_DEVELOPER_TOKEN" ]; then
+  echo "✓ Environment variables detected"
+  exit 0
+else
+  echo "❌ Environment variables NOT detected"
+  exit 1
+fi
+```
+
+---
+
+**SCENARIO A: Environment variables detected**
+
+✓ Environment variables detected!
+
+Your Claude Code environment has successfully loaded the Google Ads credentials.
+
+Let me test the connection to Google Ads API...
+
+Run: `cd ${CLAUDE_PLUGIN_ROOT}/scripts && python3 test_auth.py`
 
 **Expected output:**
 ```
 ✓ Authentication successful!
 ✓ Connected to Google Ads API
-✓ MCC Account: [Your MCC Name] (1234567890)
+✓ MCC Account: [Your MCC Name] ([MCC_ID])
 ```
 
 **If successful:**
-```
-🎉 Setup complete! Your Google Ads plugin is ready to use.
+
+🎉 **Setup complete! Your Google Ads plugin is ready to use.**
 
 Try it out:
 - "List my Google Ads accounts"
-- "Find negative keyword opportunities for account 1234567890"
+- "Show me search terms for account [ACCOUNT_ID]"
+- "Find negative keyword opportunities"
+
+---
+
+**SCENARIO B: Environment variables NOT detected**
+
+❌ **Environment variables not detected**
+
+It looks like Claude Code hasn't loaded the environment variables yet.
+
+**This usually means:**
+1. Claude Code wasn't fully restarted (conversation closed but CLI still running)
+2. Settings file wasn't saved correctly
+3. Wrong settings file was edited
+
+**Recovery steps:**
+
+**Step 1: Verify settings file has the credentials**
+
+Run:
+```bash
+SETTINGS_FILE="[PATH_USED]"
+if [ -f "$SETTINGS_FILE" ]; then
+  echo "Settings file exists"
+  cat "$SETTINGS_FILE" | python3 -m json.tool | grep GOOGLE_ADS | wc -l
+else
+  echo "Settings file not found at $SETTINGS_FILE"
+fi
 ```
 
-**If failed:**
+Expected: Should show "5" (all 5 env vars)
 
-Common issues and fixes:
+If not 5: Re-run the settings save step (Phase 7)
+
+**Step 2: Complete restart (if settings are correct)**
+
+1. **Completely exit Claude Code** (not just this conversation):
+   - `Ctrl+C` or `Cmd+Q` to quit the CLI
+   - Verify the process is gone: `ps aux | grep claude`
+2. **Wait 5 seconds**
+3. **Start fresh Claude Code session**: `claude code`
+4. **Come back to this conversation** and respond with 'restarted'
+
+**[Wait for user: 'restarted']**
+
+**When user responds 'restarted', run the environment check again (loop back to "Checking if environment variables are loaded...")**
+
+---
+
+**If still failing after restart:**
+
+The issue may be with the settings file location. Let me check all possible locations:
+
+Run:
+```bash
+echo "Checking all settings files..."
+for f in ~/.claude/settings.json .claude/settings.json .claude/settings.local.json; do
+  if [ -f "$f" ]; then
+    echo "Found: $f"
+    cat "$f" | python3 -m json.tool | grep -c GOOGLE_ADS || echo "  No GOOGLE_ADS vars"
+  fi
+done
+```
+
+This will help identify which file has the credentials and which file Claude Code is reading.
+
+**[Provide guidance based on output]**
+
+---
+
+**Common Error Messages:**
 
 ### Error: "invalid_grant"
 **Cause:** Refresh token is invalid or expired
 **Fix:**
-- Re-run this setup wizard: `/setup`
+- Re-run this setup wizard: `/google-ads:setup`
 - Make sure OAuth consent screen is "Published" (not "Testing")
 - Testing mode tokens expire after 7 days
 
