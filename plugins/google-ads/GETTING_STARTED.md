@@ -12,7 +12,11 @@ This guide walks through the complete setup process for the Google Ads plugin.
 - Create project at https://console.cloud.google.com/
 - Enable Google Ads API
 - Create OAuth 2.0 credentials (Desktop app type)
-- **Important:** Publish OAuth consent screen (don't leave in Testing mode)
+- **Optional but Recommended:** Publish OAuth consent screen to Production mode
+  - Testing mode: Tokens expire after 7 days (requires re-authentication)
+  - Production mode: Tokens work indefinitely
+  - See `/google-ads:setup` wizard for detailed publishing instructions
+  - Can't find publish controls? Proceed anyway - tokens work for 7+ days
 
 ### 3. Developer Token
 - Apply for token in Google Ads: Tools & Settings > Setup > API Center
@@ -56,7 +60,7 @@ If you prefer to configure manually, add these to `~/.claude/settings.json`:
 }
 ```
 
-**Restart Claude Code** after updating settings.
+**Restart Claude Code** after updating settings (exit, run `claude`, then `/resume`).
 
 ## Verification
 
@@ -110,7 +114,7 @@ Or invoke directly:
 
 ### "Missing required environment variables"
 - Ensure all 5 environment variables are set in settings.json
-- Restart Claude Code after updating settings
+- Restart Claude Code after updating settings (exit, run `claude`, then `/resume`)
 
 ### "invalid_grant" during authentication
 - Your refresh token expired

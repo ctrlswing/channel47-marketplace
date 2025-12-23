@@ -32,7 +32,7 @@ Expected: Python 3.10 or higher
 
 If Python not found or version too old:
 - Install Python 3.10+ from https://python.org
-- Restart Claude Code after installation
+- Restart Claude Code after installation (exit, run `claude`, then `/resume`)
 
 **Checking plugin dependencies...**
 
@@ -79,25 +79,89 @@ I'll walk you through setting up your Google Cloud project and OAuth credentials
 
 ### Step 1: Configure OAuth Consent Screen (Required First)
 
-Before creating credentials, you must configure the consent screen:
+Before creating credentials, you must configure the consent screen.
+
+**Navigation - Use Direct URL (Recommended):**
+1. Go directly to: https://console.cloud.google.com/apis/credentials/consent
+2. This ensures you're on the correct page for consent screen configuration
+
+**Alternative Navigation:**
+1. Google Cloud Console → "APIs & Services" → "OAuth consent screen"
+2. NOTE: If you see "OAuth Overview" with charts, you're on the wrong page - use direct URL above
+
+---
 
 **If you've already configured and published the consent screen:**
 ✓ Skip to Step 2
 
 **If not configured yet:**
 
-1. Go to "APIs & Services" → "OAuth consent screen"
-2. Select **User Type: External**, then click "Create"
+1. On the OAuth consent screen page, select **User Type: External**
+2. Click "Create"
 3. Fill in required fields:
-   - **App name:** "Google Ads MCP"
+   - **App name:** "Google Ads MCP" (or your preference)
    - **User support email:** your email
    - **Developer contact:** your email
-4. Click "Save and Continue" through remaining screens (Scopes, Test users)
-5. **CRITICAL:** Click "Publish App" on the final screen
-   - Don't leave in Testing mode or tokens expire in 7 days
-   - Publishing is instant for External apps with no sensitive scopes
+4. Click "Save and Continue" through:
+   - Scopes screen (no changes needed)
+   - Test users screen (no changes needed)
+5. You should now see a summary page
 
-Respond with 'done' when consent screen is configured and published.
+---
+
+### Publishing Your OAuth App (Optional but Recommended)
+
+**About Publishing Status:**
+
+Your OAuth app can be in two modes:
+- **Testing Mode** (default): Refresh tokens expire after 7 days
+- **Production Mode** (published): Refresh tokens work indefinitely
+
+**Should you publish?**
+
+✅ **PUBLISH if:** You want permanent tokens without re-authentication
+⚠️ **SKIP if:** You're okay regenerating tokens every 7 days (takes ~2 minutes with `/google-ads:setup`)
+
+**How to Publish:**
+
+**Option A: If you can find "PUBLISH APP" button**
+1. Look for "Publishing status: Testing" on the consent screen page
+2. Click the "PUBLISH APP" button
+3. Confirm the dialog
+4. Status should change to "In production"
+
+**Option B: If you cannot find publishing controls**
+This is a known UI inconsistency in Google Cloud Console.
+
+Try:
+1. Direct link: https://console.cloud.google.com/apis/credentials/consent
+2. Or: APIs & Services → Credentials → Click your OAuth Client ID → Check for publishing status
+
+**Option C: Skip publishing for now**
+- Proceed with setup as-is
+- Your tokens will work for 7+ days
+- When they expire, re-run `/google-ads:setup` (Phase 5 only, ~2 minutes)
+- Token regeneration is much faster than initial setup
+
+---
+
+**What if my tokens expire?**
+
+**Symptoms:**
+- Error: "invalid_grant" when using Google Ads tools
+- Authentication failures after 7+ days
+
+**Quick Fix (2 minutes):**
+1. Run: `/google-ads:setup`
+2. Skip to Phase 5 (Generate Refresh Token)
+3. Copy new `GOOGLE_ADS_REFRESH_TOKEN` to your settings
+4. Restart Claude Code
+
+Note: You don't need to recreate OAuth credentials, just regenerate the token.
+
+---
+
+Respond with 'done' when consent screen is configured (published or not).
 
 **[Wait for user confirmation]**
 
@@ -420,12 +484,12 @@ After you've saved the settings file manually, respond with 'done'.
 Your credentials are saved, but Claude Code needs to restart to load them into the environment.
 
 **Steps to restart:**
-1. Exit Claude Code completely:
+1. Exit Claude completely:
    - Press `Ctrl+C` (Linux/Windows) or `Cmd+Q` (Mac)
    - Or type `exit` if in a shell
 2. Wait 2-3 seconds for complete shutdown
-3. Start Claude Code again: `claude code`
-4. Return to this conversation: Navigate back or use session history
+3. Start Claude again: `claude`
+4. Return to this conversation: Type `/resume` and select this conversation
 
 After restarting Claude Code completely, respond with 'done' and I'll verify automatically.
 
@@ -508,12 +572,12 @@ If not 5: Re-run the settings save step (Phase 7)
 
 **Step 2: Complete restart (if settings are correct)**
 
-1. **Completely exit Claude Code** (not just this conversation):
+1. **Completely exit Claude** (not just this conversation):
    - `Ctrl+C` or `Cmd+Q` to quit the CLI
    - Verify the process is gone: `ps aux | grep claude`
 2. **Wait 5 seconds**
-3. **Start fresh Claude Code session**: `claude code`
-4. **Come back to this conversation** and respond with 'restarted'
+3. **Start fresh Claude session**: `claude`
+4. **Resume this conversation**: Type `/resume` and select this conversation, then respond with 'restarted'
 
 **[Wait for user: 'restarted']**
 

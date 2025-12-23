@@ -43,22 +43,37 @@ If you prefer manual configuration, add these to `~/.claude/settings.json`:
 }
 ```
 
-After adding credentials, restart Claude Code for changes to take effect.
+After adding credentials, restart Claude Code for changes to take effect (exit, run `claude`, then use `/resume` to return to your session).
 
 ## Troubleshooting
 
 ### MCP Server Won't Connect
 
 1. Verify all 5 environment variables are set in your settings file
-2. Restart Claude Code completely
+2. Restart Claude Code completely (exit with `Ctrl+C`/`Cmd+Q`, run `claude`, then `/resume`)
 3. Check for typos in variable names (they're case-sensitive)
 4. Run verification: `python ~/.claude/plugins/cache/channel47/google-ads/*/scripts/test_auth.py`
 
 ### Invalid Grant Error
 
-- OAuth consent screen must be "Published" (not "Testing")
-- Testing mode tokens expire after 7 days
-- Re-run `/google-ads:setup` to generate a new refresh token
+**Cause:** Your OAuth refresh token has expired or been revoked.
+
+**Common Scenarios:**
+- OAuth app is in "Testing" mode (tokens expire after 7 days)
+- Refresh token was manually revoked in Google Cloud Console
+- OAuth credentials were deleted/regenerated
+
+**Quick Fix (~2 minutes):**
+1. Re-run `/google-ads:setup`
+2. Skip to Phase 5 (Generate Refresh Token)
+3. Copy new `GOOGLE_ADS_REFRESH_TOKEN` to your settings
+4. Restart Claude Code
+
+**Prevent Future Expiration:**
+- Publish your OAuth app to "Production" mode (optional)
+- See `/google-ads:setup` wizard for publishing instructions
+- Direct link: https://console.cloud.google.com/apis/credentials/consent
+- Note: If you can't find publish controls, tokens will expire every 7 days
 
 ### Developer Token Issues
 

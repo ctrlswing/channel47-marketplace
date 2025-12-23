@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.2.0] - 2025-12-23
+
+### Fixed
+- **Dependency conflicts** blocking installation for new users
+  - Updated httpx, pydantic, python-dotenv, google-auth, grpcio, protobuf to compatible version ranges
+  - Resolves conflicts with mcp 1.25.0 and fastmcp 2.13.0.2
+- **OAuth consent screen publishing instructions** causing user confusion
+  - Added direct URL to Google Cloud Console OAuth consent screen
+  - Made publishing optional with clear trade-offs (Testing vs Production modes)
+  - Provided 3 fallback options when UI doesn't match documentation
+  - Added comprehensive token expiration troubleshooting guide
+- **Incorrect restart command** documentation
+  - Corrected `claude code` to `claude` throughout all documentation
+  - Added `/resume` instructions for returning to conversations after restart
+
+### Changed
+- Updated all documentation (setup.md, README.md, GETTING_STARTED.md) with improved clarity
+- Enhanced troubleshooting sections with time estimates and step-by-step fixes
+
 ## [1.0.0] - 2024-12-21
 
 ### Added
