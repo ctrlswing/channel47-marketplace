@@ -6,7 +6,7 @@ args:
     description: Content to wrap in a box (paste directly or use @file reference)
     required: true
   - name: style
-    description: "Box style: simple, double, rounded, heavy, shadow (default: simple)"
+    description: "Box style: simple, double, rounded, heavy, shadow, dashed, ascii, nested, callout (default: simple)"
     required: false
     flag: true
   - name: title
@@ -15,6 +15,14 @@ args:
     flag: true
   - name: padding
     description: Internal padding in spaces (default: 1)
+    required: false
+    flag: true
+  - name: color
+    description: "ANSI color for border: red, green, blue, cyan, magenta, yellow"
+    required: false
+    flag: true
+  - name: icon
+    description: "Status icon: info, success, warning, error, tip, note"
     required: false
     flag: true
 ---
@@ -71,6 +79,44 @@ Box with shadow effect for depth:
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 ```
 
+### dashed
+Dashed border for subtle framing:
+```
+┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐
+╎ Your content goes here               ╎
+╎ Supports multiple lines              ╎
+└╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘
+```
+
+### ascii
+Maximum compatibility with ASCII-only:
+```
++--------------------------------------+
+| Your content goes here               |
+| Supports multiple lines              |
++--------------------------------------+
+```
+
+### nested
+Double-framed nested box:
+```
+╔══════════════════════════════════════╗
+║ ┌──────────────────────────────────┐ ║
+║ │ Your content goes here           │ ║
+║ │ Supports multiple lines          │ ║
+║ └──────────────────────────────────┘ ║
+╚══════════════════════════════════════╝
+```
+
+### callout
+Side-accent callout style:
+```
+┃
+┃  Your content goes here
+┃  Supports multiple lines
+┃
+```
+
 ## Title Support
 
 Boxes can include a title in the header:
@@ -91,6 +137,42 @@ Boxes can include a title in the header:
 ║                                      ║
 ╚══════════════════════════════════════╝
 ```
+
+## Status Icons
+
+Add semantic icons with the `--icon` flag:
+
+```
+┌─ ℹ Info ─────────────────────────────┐
+│  Additional information here         │
+└──────────────────────────────────────┘
+
+┌─ ✓ Success ──────────────────────────┐
+│  Operation completed successfully    │
+└──────────────────────────────────────┘
+
+┌─ ⚠ Warning ──────────────────────────┐
+│  Proceed with caution                │
+└──────────────────────────────────────┘
+
+┌─ ✗ Error ────────────────────────────┐
+│  Something went wrong                │
+└──────────────────────────────────────┘
+
+┌─ 💡 Tip ─────────────────────────────┐
+│  Helpful suggestion here             │
+└──────────────────────────────────────┘
+
+┌─ 📝 Note ────────────────────────────┐
+│  Important note to remember          │
+└──────────────────────────────────────┘
+```
+
+Icons work with colors for semantic meaning:
+- `--icon success --color green`
+- `--icon error --color red`
+- `--icon warning --color yellow`
+- `--icon info --color blue`
 
 ## Workflow
 
@@ -159,5 +241,10 @@ Boxes can include a title in the header:
 - Use **shadow** style sparingly for special callouts
 - Use **double** style for important configuration or warnings
 - Use **rounded** style for friendly tips and notes
+- Use **callout** style for quote-like side accents
+- Use **nested** style for emphasized featured content
+- Use **dashed** or **ascii** for maximum terminal compatibility
+- Combine **--icon** and **--color** for semantic status boxes
 - Increase **padding** for more breathing room around content
 - The box automatically expands to fit the widest line
+- See `assets/reference/ansi-colors.md` for color code reference

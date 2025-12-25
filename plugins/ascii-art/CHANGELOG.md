@@ -5,6 +5,29 @@ All notable changes to the ASCII Art plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2024-12-25
+
+### Added
+
+- **New border styles**: dashed, dotted, stars, mixed for banners and boxes
+- **Color support**: ANSI color options for banners, boxes, and text effects
+- **Gradient presets**: sunset, ocean, matrix, fire, purple, grayscale
+- **New text effects**: gradient, rainbow, neon, retro
+- **Status icons**: info, success, warning, error, tip, note for boxes
+- **Intensity control**: light, medium, heavy options for effects
+- **Reference assets**:
+  - ANSI color codes reference with gradient palettes
+  - Character density ramps for shading
+  - Spinner and animation frame patterns
+
+### Enhanced
+
+- **generate-banner**: Added 4 new border styles (dashed, dotted, stars, mixed), color support, gradient presets
+- **generate-box**: Added 4 new styles (dashed, ascii, nested, callout), status icons, color support
+- **text-effects**: Added 4 new effects (gradient, rainbow, neon, retro), color/gradient options, intensity control
+
+---
+
 ## [1.0.0] - 2024-12-25
 
 ### Added

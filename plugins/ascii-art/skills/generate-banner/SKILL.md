@@ -6,7 +6,7 @@ args:
     description: Banner text content (can be multi-line)
     required: true
   - name: style
-    description: "Border style: simple, double, rounded, heavy, ascii (default: double)"
+    description: "Border style: simple, double, rounded, heavy, ascii, dashed, dotted, stars, mixed (default: double)"
     required: false
     flag: true
   - name: width
@@ -15,6 +15,10 @@ args:
     flag: true
   - name: align
     description: "Text alignment: left, center, right (default: center)"
+    required: false
+    flag: true
+  - name: color
+    description: "ANSI color: red, green, blue, cyan, magenta, yellow, or gradient name (sunset, ocean, matrix)"
     required: false
     flag: true
 ---
@@ -70,6 +74,43 @@ ASCII-only characters for maximum compatibility:
 +--------------------------------------+
 ```
 
+### dashed
+Dashed border for a lighter feel:
+```
+┌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┐
+╎     Welcome to Channel47 CLI         ╎
+╎     Version 2.0.0                    ╎
+└╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌┘
+```
+
+### dotted
+Dotted border for subtle framing:
+```
+┌┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┐
+┆     Welcome to Channel47 CLI         ┆
+┆     Version 2.0.0                    ┆
+└┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┘
+```
+
+### stars
+Decorative star border for celebrations:
+```
+***************************************
+*     Welcome to Channel47 CLI        *
+*     Version 2.0.0                   *
+***************************************
+```
+
+### mixed
+Heavy outer border with light inner separators:
+```
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃     Welcome to Channel47 CLI         ┃
+┠──────────────────────────────────────┨
+┃     Version 2.0.0                    ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+```
+
 ## Border Character Reference
 
 | Style   | Top-Left | Top-Right | Bottom-Left | Bottom-Right | Horizontal | Vertical |
@@ -78,7 +119,43 @@ ASCII-only characters for maximum compatibility:
 | double  | ╔        | ╗         | ╚           | ╝            | ═          | ║        |
 | rounded | ╭        | ╮         | ╰           | ╯            | ─          | │        |
 | heavy   | ┏        | ┓         | ┗           | ┛            | ━          | ┃        |
-| ascii   | +        | +         | +           | +            | -          | |        |
+| ascii   | +        | +         | +           | +            | -          | \|       |
+| dashed  | ┌        | ┐         | └           | ┘            | ╌          | ╎        |
+| dotted  | ┌        | ┐         | └           | ┘            | ┄          | ┆        |
+| stars   | *        | *         | *           | *            | *          | *        |
+| mixed   | ┏        | ┓         | ┗           | ┛            | ━          | ┃        |
+
+## Color Options
+
+Add terminal colors to your banners using the `--color` flag.
+
+### Basic Colors
+```
+--color red       # Red border
+--color green     # Green border (success)
+--color blue      # Blue border
+--color cyan      # Cyan border
+--color magenta   # Magenta border
+--color yellow    # Yellow border (warning)
+```
+
+### Gradient Presets
+```
+--color sunset    # Red → Orange → Yellow
+--color ocean     # Dark Blue → Cyan
+--color matrix    # Dark → Bright Green
+--color fire      # Dark Red → Orange → Yellow
+```
+
+### Color Example Output
+When using `--color red`:
+```
+\x1b[31m╔══════════════════════════╗\x1b[0m
+\x1b[31m║\x1b[0m     Important Notice     \x1b[31m║\x1b[0m
+\x1b[31m╚══════════════════════════╝\x1b[0m
+```
+
+> **Note**: Colors require ANSI-compatible terminal. See `assets/reference/ansi-colors.md` for details.
 
 ## Workflow
 
@@ -141,4 +218,9 @@ ASCII-only characters for maximum compatibility:
 - Use **rounded** borders for friendly, approachable messages
 - Use **heavy** borders for warnings or critical information
 - Use **ascii** style when targeting systems that may not support Unicode
+- Use **dashed** or **dotted** for subtle, less prominent framing
+- Use **stars** for celebratory messages or achievements
+- Use **mixed** for multi-section banners with visual hierarchy
+- Add **--color red** for errors, **--color green** for success
 - Multi-line banners work great for version info, status displays, and menus
+- See `assets/reference/ansi-colors.md` for full color code reference

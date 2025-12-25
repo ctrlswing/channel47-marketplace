@@ -78,6 +78,37 @@ Then use any skill with `/skill-name`.
 | `rounded` | ╭─╮ │ ╰─╯ | Friendly, approachable |
 | `heavy` | ┏━┓ ┃ ┗━┛ | Warnings, important info |
 | `ascii` | +-+ \| +-+ | Maximum compatibility |
+| `dashed` | ┌╌┐ ╎ └╌┘ | Subtle framing |
+| `dotted` | ┌┄┐ ┆ └┄┘ | Light borders |
+| `stars` | *** * *** | Celebrations |
+| `mixed` | Heavy + light | Visual hierarchy |
+
+## Text Effects
+
+| Effect | Description |
+|--------|-------------|
+| `shadow` | Drop shadow beneath text |
+| `3d` | Extruded 3D appearance |
+| `outline` | Hollow outlined letters |
+| `gradient` | Color gradient across text |
+| `rainbow` | Full spectrum colors |
+| `neon` | Glowing neon effect |
+| `glitch` | Distorted cyberpunk style |
+| `retro` | Vintage terminal aesthetic |
+
+## Color Support
+
+Add ANSI colors to banners, boxes, and text effects:
+
+```
+--color red       # Error messages
+--color green     # Success states
+--color yellow    # Warnings
+--color blue      # Information
+--color sunset    # Gradient: red → orange → yellow
+--color ocean     # Gradient: dark blue → cyan
+--color matrix    # Gradient: dark → bright green
+```
 
 ## Use Cases
 
@@ -91,6 +122,14 @@ Then use any skill with `/skill-name`.
 
 - [Getting Started](./GETTING_STARTED.md) - Detailed setup and usage guide
 - [Changelog](./CHANGELOG.md) - Version history
+
+## Reference Assets
+
+- [ANSI Colors](./assets/reference/ansi-colors.md) - Terminal color codes and gradients
+- [Character Ramps](./assets/reference/character-ramps.md) - Shading density characters
+- [Spinners & Animations](./assets/reference/spinners-animations.md) - Animation frame patterns
+- [Font Patterns](./assets/fonts/) - Character patterns for each font style
+- [Examples](./assets/examples/) - Logo, border, and diagram galleries
 
 ## License
 
