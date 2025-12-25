@@ -1,6 +1,6 @@
 ---
 name: strengthen-ending
-description: Improve conclusions and CTAs to be more genuine
+description: "[DEPRECATED] Use /write --mode ending instead. This skill will be removed in v2.0. Strengthen conclusion."
 args:
   - name: content
     description: Content with ending to strengthen (paste or @file reference)
@@ -10,6 +10,18 @@ args:
     required: false
     flag: true
 ---
+
+# ⚠️ DEPRECATED - Use `/write --mode ending` Instead
+
+This skill is deprecated and will be removed in v2.0.0.
+
+**Migration**: Use `/write` with ending mode:
+- `/write` then paste ending with "conclusion" (auto-detects ending mode)
+- `/write --mode ending` (explicit ending mode)
+
+---
+
+# Original Skill Documentation
 
 # Strengthen Ending Skill
 
