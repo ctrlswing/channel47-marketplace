@@ -1,5 +1,5 @@
 ---
-name: generate-style-guide
+name: configure
 description: Interactive questionnaire to create personalized style guide
 ---
 
