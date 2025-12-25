@@ -8,18 +8,14 @@ Inspired by CLI agents like Claude Code and Gemini CLI that use ASCII art to cre
 
 | Skill | Description |
 |-------|-------------|
-| `/generate-logo` | Create large ASCII text logos in various font styles |
-| `/generate-banner` | Create decorative banners with customizable borders |
-| `/generate-box` | Wrap content in ASCII boxes with optional titles |
-| `/generate-diagram` | Create flowcharts, trees, tables, and architecture diagrams |
-| `/generate-art` | Generate freeform ASCII art from descriptions |
-| `/text-effects` | Apply shadow, 3D, outline, and other effects to text |
+| `/text` | Create ASCII text art - logos, banners, boxes, and effects (replaces generate-logo, generate-banner, generate-box, text-effects) |
+| `/diagrams` | Create diagrams - flowcharts, trees, tables, architecture, sequence (replaces generate-diagram, generate-art) |
 
 ## Quick Examples
 
 ### Generate a Logo
 ```
-/generate-logo "ACME" --style block
+/text "ACME" --type logo --style block
 ```
 ```
  █████╗  ██████╗███╗   ███╗███████╗
@@ -32,7 +28,7 @@ Inspired by CLI agents like Claude Code and Gemini CLI that use ASCII art to cre
 
 ### Create a Banner
 ```
-/generate-banner "Welcome to My CLI" --style rounded
+/text "Welcome to My CLI" --type banner --style rounded
 ```
 ```
 ╭─────────────────────────────────╮
@@ -42,7 +38,7 @@ Inspired by CLI agents like Claude Code and Gemini CLI that use ASCII art to cre
 
 ### Generate a Diagram
 ```
-/generate-diagram "User clicks button -> API validates -> Database saves -> Success message" --type flowchart
+/diagrams "User clicks button → API validates → Database saves → Success message" --type flowchart
 ```
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
@@ -117,6 +113,16 @@ Add ANSI colors to banners, boxes, and text effects:
 - **README Headers**: Stand out with ASCII logos
 - **Diagrams**: Visualize architecture and flows in plain text
 - **Terminal Art**: Add personality to your tools
+
+## How It Works
+
+The plugin uses progressive disclosure to load only relevant documentation:
+
+- `/text` auto-detects type (logo, banner, box) and loads font or border references on-demand
+- `/diagrams` auto-detects type (flowchart, tree, table, architecture, sequence) and loads diagram patterns
+- Reference files (`font-loader.md`, `diagram-patterns.md`, examples) are loaded only when needed
+
+This keeps token usage efficient while maintaining quality.
 
 ## Documentation
 
