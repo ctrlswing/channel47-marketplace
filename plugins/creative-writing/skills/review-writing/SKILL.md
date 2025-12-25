@@ -30,6 +30,17 @@ Load these sections:
 - Quick Reference Checklist
 - Patterns to Avoid
 
+**Step 2.5: Load Pattern Reference**
+
+Read [../write/writing-patterns.md](../write/writing-patterns.md) for AI pattern detection rules.
+
+Use this to identify:
+- Hype words and superlatives
+- Em-dash and colon overuse
+- Rhetorical transition questions
+- Generic CTAs
+- Performative openings
+
 **Step 3: Get content**
 
 If content not provided as argument, prompt:
