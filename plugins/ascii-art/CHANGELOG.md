@@ -5,6 +5,36 @@ All notable changes to the ASCII Art plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-12-25
+
+### Added
+
+- New `/text` skill consolidating 4 text operations (generate-logo, generate-banner, generate-box, text-effects)
+- New `/diagrams` skill consolidating 2 diagram operations (generate-diagram, generate-art)
+- Progressive disclosure pattern for asset file loading
+- `font-loader.md` reference mapping styles to font files
+- `diagram-patterns.md` reference for box drawing characters and layouts
+- Example reference files for logos, banners, and boxes
+- Type auto-detection based on content characteristics
+
+### Changed
+
+- Font files now explicitly referenced by skills (progressive disclosure)
+- Color references now loaded on-demand when --color specified
+
+### Removed (BREAKING CHANGES)
+
+- `/generate-logo` - Use `/text` instead
+- `/generate-banner` - Use `/text --type banner`
+- `/generate-box` - Use `/text --type box`
+- `/text-effects` - Use `/text --effect [name]`
+- `/generate-diagram` - Use `/diagrams`
+- `/generate-art` - Use `/diagrams` or `/text`
+
+Migration: All removed skills are now unified under `/text` (for text art) and `/diagrams` (for structural diagrams) with auto-detection.
+
+---
+
 ## [1.1.0] - 2024-12-25
 
 ### Added
