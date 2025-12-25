@@ -1,0 +1,11 @@
+{
+  "name": "ascii-art",
+  "version": "1.0.0",
+  "description": "Generate ASCII art logos, banners, diagrams, and decorative text for CLI tools and documentation",
+  "author": {
+    "name": "Jackson",
+    "url": "https://channel47.dev"
+  },
+  "homepage": "https://channel47.dev/plugins/ascii-art",
+  "repository": "https://github.com/ctrlswing/channel47-marketplace"
+}
