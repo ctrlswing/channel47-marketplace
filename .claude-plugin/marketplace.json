@@ -27,6 +27,17 @@
       },
       "category": "marketing",
       "tags": ["google-ads", "gaql", "marketing", "analytics", "ppc"]
+    },
+    {
+      "name": "ascii-art",
+      "source": "./plugins/ascii-art",
+      "description": "Generate ASCII art logos, banners, diagrams, and decorative text for CLI tools and documentation",
+      "version": "1.1.0",
+      "author": {
+        "name": "Jackson"
+      },
+      "category": "creative",
+      "tags": ["ascii-art", "cli", "logos", "banners", "diagrams", "text-art", "creative", "colors", "effects"]
     }
   ]
 }
