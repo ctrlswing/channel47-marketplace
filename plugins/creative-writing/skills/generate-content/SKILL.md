@@ -1,6 +1,6 @@
 ---
 name: generate-content
-description: Create first drafts matching style guide principles
+description: "[DEPRECATED] Use /write instead. This skill will be removed in v2.0. Generate content from topics using style guide."
 args:
   - name: prompt
     description: What to write (topic, audience, content type)
@@ -14,6 +14,18 @@ args:
     required: false
     flag: true
 ---
+
+# ⚠️ DEPRECATED - Use `/write` Instead
+
+This skill is deprecated and will be removed in v2.0.0.
+
+**Migration**: Use `/write` with your topic:
+- `/write "your topic here"` (auto-detects draft mode)
+- `/write --mode draft "your topic"` (explicit draft)
+
+---
+
+# Original Skill Documentation
 
 # Generate Content Skill
 
