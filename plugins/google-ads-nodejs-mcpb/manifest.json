@@ -52,39 +52,45 @@
   "user_config": {
     "developer_token": {
       "type": "string",
+      "title": "Developer Token",
       "description": "Google Ads API Developer Token from your Google Ads Manager account",
       "required": true,
       "sensitive": true
     },
     "login_customer_id": {
       "type": "string",
+      "title": "MCC Account ID",
       "description": "MCC (Manager) Account ID - 10 digits without dashes (e.g., 1234567890)",
-      "required": true,
-      "pattern": "^[0-9]{10}$"
+      "required": true
     },
     "client_id": {
       "type": "string",
+      "title": "OAuth Client ID",
       "description": "OAuth 2.0 Client ID from Google Cloud Console",
       "required": true,
       "sensitive": true
     },
     "client_secret": {
       "type": "string",
+      "title": "OAuth Client Secret",
       "description": "OAuth 2.0 Client Secret from Google Cloud Console",
       "required": true,
       "sensitive": true
     },
     "refresh_token": {
       "type": "string",
+      "title": "OAuth Refresh Token",
       "description": "OAuth 2.0 Refresh Token obtained through the authorization flow",
       "required": true,
       "sensitive": true
     }
   },
   "compatibility": {
+    "claude_desktop": ">=0.10.0",
     "platforms": ["darwin", "win32", "linux"],
     "runtimes": {
       "node": ">=18.0.0"
     }
-  }
+  },
+  "privacy_policies": []
 }
