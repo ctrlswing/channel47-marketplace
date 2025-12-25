@@ -1,6 +1,6 @@
 ---
 name: improve-opening
-description: Rewrite first 1-3 paragraphs to be more honest and engaging
+description: "[DEPRECATED] Use /write --mode opening instead. This skill will be removed in v2.0. Improve opening paragraphs."
 args:
   - name: content
     description: Content with opening to improve (paste or @file reference)
@@ -10,6 +10,18 @@ args:
     required: false
     flag: true
 ---
+
+# ⚠️ DEPRECATED - Use `/write --mode opening` Instead
+
+This skill is deprecated and will be removed in v2.0.0.
+
+**Migration**: Use `/write` with opening mode:
+- `/write` then paste opening paragraphs (auto-detects opening mode for short content)
+- `/write --mode opening` (explicit opening mode)
+
+---
+
+# Original Skill Documentation
 
 # Improve Opening Skill
 
