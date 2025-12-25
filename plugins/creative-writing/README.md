@@ -4,12 +4,9 @@ A Claude Code plugin that helps you write clearer, more honest prose.
 
 ## What It Does
 
-- **Edit drafts** to remove AI writing patterns and improve clarity
-- **Generate content** that matches your style guide
+- **Write and edit content** with unified workflow for drafts, editing, openings, endings, and pattern removal
 - **Review writing** with specific, actionable feedback
-- **Improve openings** and strengthen endings
-- **Remove AI tells** like em-dashes and hype words
-- **Create style guides** through interactive questionnaire
+- **Configure style guides** through interactive questionnaire
 
 ## Installation
 
@@ -23,13 +20,9 @@ See [GETTING_STARTED.md](./GETTING_STARTED.md) for detailed instructions.
 
 ## Skills
 
-- `/edit-draft` - Rewrite content to match style guide
-- `/generate-content` - Create first drafts
-- `/review-writing` - Get feedback without rewriting
-- `/improve-opening` - Fix first 1-3 paragraphs
-- `/strengthen-ending` - Improve conclusions
-- `/remove-ai-tells` - Clean common AI patterns
-- `/generate-style-guide` - Create personalized guide
+- `/write` - Generate or refine content (drafts, editing, openings, endings, pattern removal)
+- `/review` - Get feedback without rewriting
+- `/configure` - Create personalized style guide
 
 ## Customization
 
@@ -51,14 +44,11 @@ See `examples/my-style-guide.md` for a sample custom style guide tailored to tec
 
 ## How It Works
 
-The plugin uses smart chunking to load only relevant style guide sections per skill:
+The plugin uses progressive disclosure to load only relevant documentation:
 
-- `/edit-draft`: Loads Voice, Structure, Word Choice, Patterns to Avoid, Quick Reference
-- `/review-writing`: Loads Quick Reference and Patterns to Avoid
-- `/improve-opening`: Loads Voice Principles and Patterns to Avoid
-- `/strengthen-ending`: Loads Endings and Patterns to Avoid
-- `/remove-ai-tells`: Loads full Patterns to Avoid table
-- `/generate-content`: Loads full style guide
+- `/write` auto-detects mode (draft, edit, opening, ending, clean) and loads appropriate style guide sections
+- `/review` loads pattern detection reference for consistent feedback
+- Reference files (`writing-patterns.md`, `style-guide-loader.md`) are loaded on-demand
 
 This keeps token usage efficient while maintaining quality.
 
