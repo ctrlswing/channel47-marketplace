@@ -1,6 +1,6 @@
 ---
 name: edit-draft
-description: Rewrite content to match style guide principles
+description: "[DEPRECATED] Use /write instead. This skill will be removed in v2.0. Rewrite content to match style guide principles."
 args:
   - name: content
     description: Content to edit (paste directly or use @file reference)
@@ -10,6 +10,20 @@ args:
     required: false
     flag: true
 ---
+
+# ⚠️ DEPRECATED - Use `/write` Instead
+
+This skill is deprecated and will be removed in v2.0.0.
+
+**Migration**: Use `/write` with your content:
+- `/write "your content here"` (auto-detects edit mode)
+- `/write "your content" --mode edit` (explicit edit)
+
+The new `/write` skill consolidates edit-draft, improve-opening, strengthen-ending, and remove-ai-tells into one unified workflow with auto-detection.
+
+---
+
+# Original Skill Documentation
 
 # Edit Draft Skill
 
