@@ -1,0 +1,30 @@
+{
+  "name": "google-ads-nodejs-mcpb",
+  "version": "1.0.0",
+  "description": "Google Ads MCP Server for Claude - Query Google Ads data using GAQL",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node --test server/*.test.js",
+    "lint": "eslint server/",
+    "pack": "mcpb pack ."
+  },
+  "keywords": [
+    "mcp",
+    "google-ads",
+    "gaql",
+    "analytics",
+    "advertising"
+  ],
+  "author": "Channel47",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "google-ads-api": "^16.0.0",
+    "google-auth-library": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

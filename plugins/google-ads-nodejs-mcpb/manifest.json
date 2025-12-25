@@ -1,0 +1,90 @@
+{
+  "manifest_version": "0.3",
+  "name": "google-ads-nodejs",
+  "display_name": "Google Ads MCP Server",
+  "version": "1.0.0",
+  "description": "Query Google Ads data using GAQL with OAuth 2.0 authentication. Provides read-only access to campaigns, keywords, search terms, and account data.",
+  "long_description": "A comprehensive MCP server for Google Ads analytics and reporting. Execute Google Ads Query Language (GAQL) queries for campaign performance, keyword analysis, search term reports, and cross-account data access. Features OAuth 2.0 authentication, read-only safety enforcement, and optimized response handling for large datasets.",
+  "author": {
+    "name": "Channel47",
+    "url": "https://github.com/ctrlswing/channel47-marketplace"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ctrlswing/channel47-marketplace"
+  },
+  "license": "MIT",
+  "keywords": [
+    "google-ads",
+    "advertising",
+    "analytics",
+    "gaql",
+    "ppc",
+    "marketing",
+    "mcp"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "GOOGLE_ADS_DEVELOPER_TOKEN": "${user_config.developer_token}",
+        "GOOGLE_ADS_LOGIN_CUSTOMER_ID": "${user_config.login_customer_id}",
+        "GOOGLE_ADS_CLIENT_ID": "${user_config.client_id}",
+        "GOOGLE_ADS_CLIENT_SECRET": "${user_config.client_secret}",
+        "GOOGLE_ADS_REFRESH_TOKEN": "${user_config.refresh_token}",
+        "NODE_ENV": "production"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "run_google_ads_gaql",
+      "description": "Execute a Google Ads Query Language (GAQL) query for data retrieval. Supports all GAQL resources including campaigns, ad groups, keywords, search terms, and metrics. Read-only - mutations are blocked for safety."
+    },
+    {
+      "name": "google_ads_list_accounts",
+      "description": "List all Google Ads accounts accessible under the configured MCC (Manager) account. Returns account IDs, names, currencies, timezones, and status information."
+    }
+  ],
+  "user_config": {
+    "developer_token": {
+      "type": "string",
+      "description": "Google Ads API Developer Token from your Google Ads Manager account",
+      "required": true,
+      "sensitive": true
+    },
+    "login_customer_id": {
+      "type": "string",
+      "description": "MCC (Manager) Account ID - 10 digits without dashes (e.g., 1234567890)",
+      "required": true,
+      "pattern": "^[0-9]{10}$"
+    },
+    "client_id": {
+      "type": "string",
+      "description": "OAuth 2.0 Client ID from Google Cloud Console",
+      "required": true,
+      "sensitive": true
+    },
+    "client_secret": {
+      "type": "string",
+      "description": "OAuth 2.0 Client Secret from Google Cloud Console",
+      "required": true,
+      "sensitive": true
+    },
+    "refresh_token": {
+      "type": "string",
+      "description": "OAuth 2.0 Refresh Token obtained through the authorization flow",
+      "required": true,
+      "sensitive": true
+    }
+  },
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  }
+}
