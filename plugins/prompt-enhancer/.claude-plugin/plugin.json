@@ -1,0 +1,11 @@
+{
+  "name": "prompt-enhancer",
+  "version": "1.0.0",
+  "description": "Optimize prompts using Anthropic's 2025 best practices for Claude 4.x models",
+  "author": {
+    "name": "Jackson",
+    "url": "https://channel47.dev"
+  },
+  "homepage": "https://channel47.dev/plugins/prompt-enhancer",
+  "repository": "https://github.com/ctrlswing/channel47-marketplace"
+}
