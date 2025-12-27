@@ -38,6 +38,17 @@
       },
       "category": "creative",
       "tags": ["ascii-art", "cli", "logos", "banners", "diagrams", "text-art", "creative", "colors", "effects"]
+    },
+    {
+      "name": "prompt-enhancer",
+      "source": "./plugins/prompt-enhancer",
+      "description": "Optimize prompts using Anthropic's 2025 best practices for Claude 4.x models",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jackson"
+      },
+      "category": "development",
+      "tags": ["prompts", "optimization", "anthropic", "best-practices", "claude-4x", "prompt-engineering"]
     }
   ]
 }
