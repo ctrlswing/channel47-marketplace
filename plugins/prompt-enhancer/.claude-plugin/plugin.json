@@ -7,5 +7,7 @@
     "url": "https://channel47.dev"
   },
   "homepage": "https://channel47.dev/plugins/prompt-enhancer",
-  "repository": "https://github.com/ctrlswing/channel47-marketplace"
+  "repository": "https://github.com/ctrlswing/channel47-marketplace",
+  "license": "MIT",
+  "keywords": ["prompts", "optimization", "anthropic", "best-practices", "claude-4x", "prompt-engineering"]
 }
