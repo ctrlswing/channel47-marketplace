@@ -14,6 +14,7 @@ Add this marketplace to Claude Code:
 
 - [Creative Writing](https://channel47.dev/plugins/creative-writing) - Writing assistant for editing and improving prose
 - [Google Ads](https://channel47.dev/plugins/google-ads) - Query Google Ads data using GAQL with OAuth authentication
+- [Prompt Enhancer](https://channel47.dev/plugins/prompt-enhancer) - Optimize prompts using Anthropic's 2025 best practices
 
 ## Philosophy
 
