@@ -37,6 +37,9 @@ from datetime import datetime
 CHARACTER_LIMIT = 25000
 GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
+# File upload limits
+MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB
+
 # Model configurations
 FLASH_MODEL = "gemini-2.5-flash-image"
 PRO_MODEL = "gemini-3-pro-image-preview"  # Supports 4K and advanced reasoning
@@ -84,6 +87,14 @@ class ThinkingLevel(str, Enum):
     HIGH = "HIGH"
 
 
+class SafetyLevel(str, Enum):
+    """Content safety filtering levels."""
+    STRICT = "STRICT"  # BLOCK_LOW_AND_ABOVE - Strictest filtering
+    MODERATE = "MODERATE"  # BLOCK_MEDIUM_AND_ABOVE - Balanced filtering
+    PERMISSIVE = "PERMISSIVE"  # BLOCK_ONLY_HIGH - Minimal filtering
+    OFF = "OFF"  # BLOCK_NONE - No filtering (may be overridden by API)
+
+
 class MediaResolution(str, Enum):
     """Output resolution settings."""
     LOW = "LOW"
@@ -129,6 +140,20 @@ class GenerateImageInput(BaseModel):
     reference_image_base64: Optional[str] = Field(
         default=None,
         description="Base64 encoded image data to use as reference. Provide this OR reference_file_uri, not both."
+    )
+    number_of_images: int = Field(
+        default=1,
+        description="Number of images to generate (1-4). Multiple images will be returned as separate outputs.",
+        ge=1,
+        le=4
+    )
+    safety_level: SafetyLevel = Field(
+        default=SafetyLevel.STRICT,
+        description="Content safety filtering level: 'STRICT' (default, blocks most), 'MODERATE' (balanced), 'PERMISSIVE' (minimal), 'OFF' (none)"
+    )
+    seed: Optional[int] = Field(
+        default=None,
+        description="Seed for reproducible generation. Use the same seed with the same prompt for consistent results."
     )
     output_path: Optional[str] = Field(
         default=None,
@@ -214,6 +239,24 @@ def sanitize_error_response(error_text: str, max_length: int = 500) -> str:
     return sanitized
 
 
+def validate_file_size(file_size: int, max_size: int = MAX_FILE_SIZE) -> None:
+    """
+    Validate file size is within limits.
+
+    Args:
+        file_size: Size in bytes
+        max_size: Maximum allowed size (default: MAX_FILE_SIZE)
+
+    Raises:
+        ValueError: If file exceeds size limit
+    """
+    if file_size > max_size:
+        raise ValueError(
+            f"File too large: {file_size:,} bytes "
+            f"(maximum: {max_size:,} bytes / {max_size // (1024*1024)}MB)"
+        )
+
+
 def select_model(prompt: str, requested_tier: ModelTier) -> tuple[str, str]:
     """
     Select appropriate model based on prompt analysis and user preference.
@@ -242,6 +285,40 @@ def select_model(prompt: str, requested_tier: ModelTier) -> tuple[str, str]:
 
     # Default to Flash for general use (faster)
     return FLASH_MODEL, "Flash model auto-selected (default for general prompts)"
+
+
+def get_safety_settings(safety_level: SafetyLevel) -> list[dict]:
+    """
+    Map SafetyLevel enum to Gemini API safety settings format.
+
+    Args:
+        safety_level: Desired safety filtering level
+
+    Returns:
+        List of safety setting dictionaries for API request
+    """
+    # Map SafetyLevel to API threshold values
+    threshold_map = {
+        SafetyLevel.STRICT: "BLOCK_LOW_AND_ABOVE",
+        SafetyLevel.MODERATE: "BLOCK_MEDIUM_AND_ABOVE",
+        SafetyLevel.PERMISSIVE: "BLOCK_ONLY_HIGH",
+        SafetyLevel.OFF: "BLOCK_NONE"
+    }
+
+    threshold = threshold_map[safety_level]
+
+    # Apply threshold to all harm categories
+    harm_categories = [
+        "HARM_CATEGORY_HARASSMENT",
+        "HARM_CATEGORY_HATE_SPEECH",
+        "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "HARM_CATEGORY_DANGEROUS_CONTENT"
+    ]
+
+    return [
+        {"category": category, "threshold": threshold}
+        for category in harm_categories
+    ]
 
 
 def get_aspect_dimensions(aspect_ratio: AspectRatio) -> tuple[int, int]:
@@ -362,7 +439,12 @@ async def generate_image(params: GenerateImageInput) -> str:
         generation_config = {
             "responseModalities": ["TEXT", "IMAGE"],
             "aspectRatio": params.aspect_ratio.value,
+            "candidateCount": params.number_of_images,
         }
+
+        # Add seed if specified for reproducible generation
+        if params.seed is not None:
+            generation_config["seed"] = params.seed
 
         # Add thinking config if specified
         if params.thinking_level:
@@ -396,7 +478,8 @@ async def generate_image(params: GenerateImageInput) -> str:
             "contents": [{
                 "parts": parts
             }],
-            "generationConfig": generation_config
+            "generationConfig": generation_config,
+            "safetySettings": get_safety_settings(params.safety_level)
         }
 
         # Add grounding if requested
@@ -603,6 +686,15 @@ async def upload_file(params: UploadFileInput) -> str:
 
         file_data = file_path.read_bytes()
         file_size = len(file_data)
+
+        # Validate file size
+        try:
+            validate_file_size(file_size)
+        except ValueError as e:
+            return json.dumps({
+                "success": False,
+                "error": str(e)
+            }, indent=2)
 
         # Determine MIME type
         mime_types = {

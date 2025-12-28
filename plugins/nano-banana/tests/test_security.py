@@ -112,3 +112,17 @@ def test_save_image_allows_cwd():
         finally:
             # Restore original directory
             os.chdir(original_cwd)
+
+
+def test_upload_file_rejects_large_files():
+    """Test that files exceeding size limit are rejected."""
+    # This test would need actual upload_file function testing
+    # For now, we'll test the validation logic separately
+    from nanobanana_mcp import validate_file_size
+
+    # 25MB file should be rejected (max is 20MB)
+    with pytest.raises(ValueError, match="File too large"):
+        validate_file_size(25 * 1024 * 1024)
+
+    # 10MB file should be accepted
+    validate_file_size(10 * 1024 * 1024)  # Should not raise
