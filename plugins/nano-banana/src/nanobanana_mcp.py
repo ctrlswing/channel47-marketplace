@@ -29,6 +29,7 @@ import os
 import json
 import base64
 import httpx
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -186,6 +187,31 @@ def get_api_key() -> str:
             '  "env": { "GEMINI_API_KEY": "your-key-here" }'
         )
     return api_key
+
+
+def sanitize_error_response(error_text: str, max_length: int = 500) -> str:
+    """
+    Sanitize error responses to prevent API key leakage.
+
+    Args:
+        error_text: Raw error text from API
+        max_length: Maximum length to return (default 500)
+
+    Returns:
+        Sanitized and truncated error text
+    """
+    if not error_text:
+        return ""
+
+    # Remove API keys from URLs (matches key=... patterns)
+    sanitized = re.sub(r'key=[^&\s]+', 'key=REDACTED', error_text)
+
+    # Truncate to max length
+    if len(sanitized) > max_length:
+        truncation_marker = "\n[TRUNCATED]"
+        sanitized = sanitized[:max_length - len(truncation_marker)] + truncation_marker
+
+    return sanitized
 
 
 def select_model(prompt: str, requested_tier: ModelTier) -> tuple[str, str]:
@@ -352,7 +378,7 @@ async def generate_image(params: GenerateImageInput) -> str:
             )
 
             if response.status_code != 200:
-                error_detail = response.text
+                error_detail = sanitize_error_response(response.text)
                 return json.dumps({
                     "success": False,
                     "error": f"API request failed with status {response.status_code}",
@@ -470,7 +496,7 @@ async def list_files(params: ListFilesInput) -> str:
                 return json.dumps({
                     "success": False,
                     "error": f"API request failed with status {response.status_code}",
-                    "details": response.text
+                    "details": sanitize_error_response(response.text)
                 }, indent=2)
 
             result = response.json()
@@ -576,7 +602,7 @@ async def upload_file(params: UploadFileInput) -> str:
                 return json.dumps({
                     "success": False,
                     "error": f"Failed to start upload: {start_response.status_code}",
-                    "details": start_response.text
+                    "details": sanitize_error_response(start_response.text)
                 }, indent=2)
 
             upload_url = start_response.headers.get("X-Goog-Upload-URL")
@@ -601,7 +627,7 @@ async def upload_file(params: UploadFileInput) -> str:
                 return json.dumps({
                     "success": False,
                     "error": f"Failed to upload file: {upload_response.status_code}",
-                    "details": upload_response.text
+                    "details": sanitize_error_response(upload_response.text)
                 }, indent=2)
 
             result = upload_response.json()
@@ -668,7 +694,7 @@ async def delete_file(params: DeleteFileInput) -> str:
                 return json.dumps({
                     "success": False,
                     "error": f"Delete failed with status {response.status_code}",
-                    "details": response.text
+                    "details": sanitize_error_response(response.text)
                 }, indent=2)
 
     except Exception as e:
