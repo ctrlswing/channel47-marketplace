@@ -287,7 +287,15 @@ def save_image(image_data: bytes, output_path: str) -> str:
     Raises:
         ValueError: If path is invalid or attempts traversal
     """
-    path = Path(output_path).expanduser().resolve()
+    # First expand user paths
+    path = Path(output_path).expanduser()
+
+    # Add extension if missing BEFORE security validation
+    if not path.suffix:
+        path = path.with_suffix('.png')
+
+    # NOW resolve to absolute path for security check
+    path = path.resolve()
 
     # Validate path is within safe directories
     safe_dirs = [Path.home(), Path.cwd()]
@@ -305,17 +313,13 @@ def save_image(image_data: bytes, output_path: str) -> str:
 
     if not is_safe:
         raise ValueError(
-            f"Invalid output path: must be within home directory or current working directory. "
-            f"Attempted: {path}"
+            "Invalid output path: must be within home directory or current working directory"
         )
 
     # Create parent directories if needed
     path.parent.mkdir(parents=True, exist_ok=True)
 
-    # Add extension if missing
-    if not path.suffix:
-        path = path.with_suffix('.png')
-
+    # Write image data (extension already added above)
     path.write_bytes(image_data)
     return str(path)
 
@@ -357,6 +361,7 @@ async def generate_image(params: GenerateImageInput) -> str:
         # Build generation config
         generation_config = {
             "responseModalities": ["TEXT", "IMAGE"],
+            "aspectRatio": params.aspect_ratio.value,
         }
 
         # Add thinking config if specified

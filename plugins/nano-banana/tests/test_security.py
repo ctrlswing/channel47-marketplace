@@ -79,22 +79,36 @@ def test_save_image_prevents_traversal():
 
 def test_save_image_allows_home_directory():
     """Test that writing to home directory is allowed."""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        home_path = Path.home() / "test_image.png"
-        # This should succeed without raising
-        # (we'll clean it up in the test)
-        try:
-            result = save_image(b"test", str(home_path))
-            assert Path(result).exists()
-        finally:
-            if home_path.exists():
-                home_path.unlink()
+    import shutil
+
+    # Create temp dir inside home for test isolation
+    temp_home_dir = Path.home() / ".nano_banana_test_tmp"
+    temp_home_dir.mkdir(exist_ok=True)
+
+    try:
+        test_file = temp_home_dir / "test_image.png"
+        result = save_image(b"test data", str(test_file))
+        assert Path(result).exists()
+        assert Path(result).read_bytes() == b"test data"
+    finally:
+        # Clean up
+        if temp_home_dir.exists():
+            shutil.rmtree(temp_home_dir)
 
 
 def test_save_image_allows_cwd():
     """Test that writing to current directory is allowed."""
     import os
+
+    # Save current dir
+    original_cwd = os.getcwd()
+
     with tempfile.TemporaryDirectory() as tmpdir:
-        os.chdir(tmpdir)
-        result = save_image(b"test", "test_image.png")
-        assert Path(result).exists()
+        try:
+            os.chdir(tmpdir)
+            result = save_image(b"test data", "test_image.png")
+            assert Path(result).exists()
+            assert Path(result).read_bytes() == b"test data"
+        finally:
+            # Restore original directory
+            os.chdir(original_cwd)
