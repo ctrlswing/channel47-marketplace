@@ -1,14 +1,16 @@
-# Nano Banana Pro Plugin
+# Nano Banana
 
-AI-powered image generation using Google's Nano Banana Pro (Gemini 3 Pro Image) with professional 4K quality, smart model selection, and Google Search grounding.
+AI-powered image generation using Google's Nano Banana Pro (Gemini 3 Pro Image) and Nano Banana (Gemini 2.5 Flash Image) with professional 4K quality, smart model selection, and Google Search grounding.
 
 ## Features
 
-- **Multi-Model Support**: Choose between Flash (fast, 2-3s) and Pro (high-quality, 4K)
-- **Smart Model Selection**: Automatically picks the best model based on your prompt
-- **Multiple Aspect Ratios**: 1:1, 16:9, 9:16, 21:9, 4:3, and more
-- **Google Search Grounding**: Generate factually accurate images with real-world knowledge
-- **Advanced Reasoning**: Configurable thinking levels for complex generations
+- **Dual Model Support**:
+  - **Pro Tier**: Uses `gemini-3-pro-image-preview` for professional 4K quality and complex prompt adherence
+  - **Flash Tier**: Uses `gemini-2.5-flash-image` for lightning-fast (2-3s) generation and draft iterations
+- **Smart Model Selection**: Automatically chooses the right model based on your prompt (e.g., "quick sketch" vs "4k professional photo")
+- **Google Search Grounding**: Generate factually accurate images using Google Search
+- **Aspect Ratio Control**: Support for various formats (16:9, 1:1, 9:16, etc.)
+- **Advanced Reasoning**: Configurable "thinking" levels for complex prompts
 - **File Management**: Upload and manage files via Gemini Files API
 
 ## Required Environment Variables

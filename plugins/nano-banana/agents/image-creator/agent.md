@@ -14,7 +14,6 @@ triggerWords:
 color: purple
 tools:
   - generate_image
-  - quick_generate
   - list_files
   - upload_file
 ---
@@ -91,7 +90,7 @@ Enhanced: "A fluffy orange tabby cat curled up on a cozy armchair by a window, s
 
 ### Step 4: Generate and Review
 
-1. Call the generate_image or quick_generate tool
+1. Call the generate_image tool
 2. Present the result to the user
 3. Explain what settings were used
 

@@ -25,7 +25,15 @@ args:
 
 # Image Generation Skill
 
-Generate AI-powered images using Nano Banana Pro (Gemini 3 Pro Image).
+Generate AI-powered images using Nano Banana Pro (Gemini 3 Pro Image) and Nano Banana (Gemini 2.5 Flash Image).
+This skill provides professional-grade image generation with smart model selection, aspect ratio control, and Google Search grounding.
+
+## Capabilities
+
+- **Smart Model Selection**:
+  - `Pro` (Gemini 3 Pro Image): Best for photorealism, text rendering, and complex scenes. Supports up to 4K resolution.
+  - `Flash` (Gemini 2.5 Flash Image): Best for speed (2-3s), iterating on concepts, and simple illustrations.
+  - `Auto`: Automatically selects based on prompt keywords (e.g., "4k", "professional" triggers Pro; "sketch", "draft" triggers Flash).
 
 ## Workflow
 
@@ -98,15 +106,6 @@ generate_image(
   aspect_ratio="1:1|16:9|9:16|21:9",
   thinking_level="LOW|HIGH",
   use_grounding=false|true,
-  output_path="/path/to/save.png"
-)
-```
-
-For quick generation:
-```
-quick_generate(
-  prompt="prompt here",
-  style="photo|illustration|cartoon|painting|3d|sketch",
   output_path="/path/to/save.png"
 )
 ```

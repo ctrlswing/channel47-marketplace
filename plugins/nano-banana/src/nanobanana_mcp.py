@@ -1,16 +1,16 @@
 # File: src/nanobanana_mcp.py
 # What: Nano Banana Pro MCP server for AI-powered image generation.
-# Why: Provides Claude Code with access to Google's Gemini 3 Pro Image model
-#      for professional-grade image generation with smart model selection.
+# Why: Provides Claude Code with access to Google's Gemini 3 Pro Image and
+#      Gemini 2.5 Flash Image models for professional-grade image generation.
 
 """
 Nano Banana Pro MCP Server
 
 A comprehensive MCP server for AI-powered image generation using Google's
-Nano Banana Pro (Gemini 3 Pro Image) model.
+Nano Banana Pro (Gemini 3 Pro Image) and Nano Banana (Gemini 2.5 Flash Image) models.
 
 This server provides tools for:
-- Multi-model image generation (Flash for speed, Pro for quality)
+- Multi-model image generation (Flash for speed, Pro for 4K quality)
 - Smart model selection based on prompt analysis
 - Aspect ratio control for various use cases
 - Google Search grounding for factual accuracy
@@ -37,8 +37,8 @@ CHARACTER_LIMIT = 25000
 GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
 # Model configurations
-FLASH_MODEL = "gemini-2.0-flash-preview-image-generation"
-PRO_MODEL = "gemini-2.0-flash-preview-image-generation"  # Using same model as fallback
+FLASH_MODEL = "gemini-2.5-flash-image"
+PRO_MODEL = "gemini-3-pro-image-preview"  # Supports 4K and advanced reasoning
 
 # Keywords for smart model selection
 QUALITY_KEYWORDS = [
@@ -117,29 +117,21 @@ class GenerateImageInput(BaseModel):
         default=False,
         description="Enable Google Search grounding for factually accurate images (Pro model only)"
     )
+    reference_file_uri: Optional[str] = Field(
+        default=None,
+        description="URI of an uploaded file (from upload_file) to use as reference/context"
+    )
+    reference_file_mime_type: Optional[str] = Field(
+        default=None,
+        description="MIME type of the reference file (e.g., 'image/png'). Defaults to 'image/png' if not specified."
+    )
+    reference_image_base64: Optional[str] = Field(
+        default=None,
+        description="Base64 encoded image data to use as reference. Provide this OR reference_file_uri, not both."
+    )
     output_path: Optional[str] = Field(
         default=None,
         description="Optional file path to save the generated image. If not provided, returns base64 data."
-    )
-
-
-class QuickGenerateInput(BaseModel):
-    """Simplified input for quick image generation."""
-    model_config = ConfigDict(str_strip_whitespace=True, validate_assignment=True)
-
-    prompt: str = Field(
-        ...,
-        description="Description of the image to generate",
-        min_length=1,
-        max_length=2000
-    )
-    style: Optional[str] = Field(
-        default=None,
-        description="Optional style modifier: 'photo', 'illustration', 'cartoon', 'painting', '3d', 'sketch'"
-    )
-    output_path: Optional[str] = Field(
-        default=None,
-        description="Optional file path to save the generated image"
     )
 
 
@@ -316,11 +308,30 @@ async def generate_image(params: GenerateImageInput) -> str:
             }
 
         # Build request body
+        parts = []
+
+        # Add reference image if provided
+        if params.reference_file_uri:
+            parts.append({
+                "fileData": {
+                    "fileUri": params.reference_file_uri,
+                    "mimeType": params.reference_file_mime_type or "image/png"
+                }
+            })
+        elif params.reference_image_base64:
+             parts.append({
+                "inlineData": {
+                    "mimeType": params.reference_file_mime_type or "image/png",
+                    "data": params.reference_image_base64
+                }
+            })
+
+        # Add text prompt
+        parts.append({"text": params.prompt})
+
         request_body = {
             "contents": [{
-                "parts": [{
-                    "text": params.prompt
-                }]
+                "parts": parts
             }],
             "generationConfig": generation_config
         }
@@ -418,58 +429,6 @@ async def generate_image(params: GenerateImageInput) -> str:
             "text_response": text_response,
             "output": output_info
         }, indent=2)
-
-    except Exception as e:
-        return json.dumps({
-            "success": False,
-            "error": str(e),
-            "error_type": type(e).__name__
-        }, indent=2)
-
-
-@mcp.tool(
-    name="quick_generate",
-    annotations={
-        "title": "Quick Image Generation",
-        "readOnlyHint": False,
-        "destructiveHint": False,
-        "idempotentHint": False,
-        "openWorldHint": True
-    }
-)
-async def quick_generate(params: QuickGenerateInput) -> str:
-    """
-    Quick image generation with smart defaults.
-
-    Automatically selects the best model and settings based on your prompt.
-    For more control, use the full generate_image tool.
-
-    Style options: photo, illustration, cartoon, painting, 3d, sketch
-    """
-    try:
-        # Enhance prompt with style if provided
-        prompt = params.prompt
-        if params.style:
-            style_modifiers = {
-                "photo": "photorealistic photograph, professional photography",
-                "illustration": "digital illustration, clean lines, vibrant colors",
-                "cartoon": "cartoon style, animated, fun and playful",
-                "painting": "oil painting style, artistic brushstrokes, fine art",
-                "3d": "3D rendered, CGI, high-quality 3D graphics",
-                "sketch": "pencil sketch, hand-drawn, artistic sketch style"
-            }
-            modifier = style_modifiers.get(params.style.lower(), params.style)
-            prompt = f"{prompt}, {modifier}"
-
-        # Use the main generate function with auto settings
-        generate_params = GenerateImageInput(
-            prompt=prompt,
-            model_tier=ModelTier.AUTO,
-            aspect_ratio=AspectRatio.SQUARE,
-            output_path=params.output_path
-        )
-
-        return await generate_image(generate_params)
 
     except Exception as e:
         return json.dumps({

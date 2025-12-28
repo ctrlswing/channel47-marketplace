@@ -120,12 +120,6 @@ Full-featured image generation with all options:
 - Google Search grounding
 - File output
 
-### quick_generate
-Simplified generation with smart defaults:
-- Automatic model selection
-- Built-in style options
-- Minimal configuration
-
 ### list_files
 View files uploaded to Gemini Files API:
 - File names and metadata
