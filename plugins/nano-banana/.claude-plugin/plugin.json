@@ -1,6 +1,6 @@
 {
   "name": "nano-banana",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "AI-powered image generation using Google's Nano Banana Pro (Gemini 3 Pro Image) and Nano Banana (Gemini 2.5 Flash Image) with professional 4K quality, smart model selection, and Google Search grounding",
   "author": {
     "name": "Jackson",
