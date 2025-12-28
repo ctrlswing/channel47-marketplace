@@ -49,6 +49,17 @@
       },
       "category": "development",
       "tags": ["prompts", "optimization", "anthropic", "best-practices", "claude-4x", "prompt-engineering"]
+    },
+    {
+      "name": "nano-banana",
+      "source": "./plugins/nano-banana",
+      "description": "AI-powered image generation using Google's Nano Banana Pro (Gemini 3 Pro Image) with professional 4K quality",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jackson"
+      },
+      "category": "creative",
+      "tags": ["image-generation", "ai-art", "gemini", "nano-banana", "4k", "mcp", "creative", "google"]
     }
   ]
 }
