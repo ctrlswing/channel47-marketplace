@@ -39,6 +39,10 @@ GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta"
 # File upload limits
 MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB
 
+# Thinking budget levels for Pro model
+THINKING_BUDGET_LOW = 1024
+THINKING_BUDGET_HIGH = 8192
+
 # Model configurations
 FLASH_MODEL = "gemini-2.5-flash-image"
 PRO_MODEL = "gemini-3-pro-image-preview"  # Supports 4K and advanced reasoning
@@ -415,8 +419,9 @@ async def generate_image(params: GenerateImageInput) -> str:
 
         # Add thinking config if specified
         if params.thinking_level:
+            thinking_budget = THINKING_BUDGET_HIGH if params.thinking_level == ThinkingLevel.HIGH else THINKING_BUDGET_LOW
             generation_config["thinkingConfig"] = {
-                "thinkingBudget": 1024 if params.thinking_level == ThinkingLevel.LOW else 8192
+                "thinkingBudget": thinking_budget
             }
 
         # Build request body
