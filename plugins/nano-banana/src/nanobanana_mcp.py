@@ -203,8 +203,8 @@ def sanitize_error_response(error_text: str, max_length: int = 500) -> str:
     if not error_text:
         return ""
 
-    # Remove API keys from URLs (matches key=... patterns)
-    sanitized = re.sub(r'key=[^&\s]+', 'key=REDACTED', error_text)
+    # Remove API keys from URLs (matches key=... patterns, case-insensitive)
+    sanitized = re.sub(r'key=[^&\s]+', 'key=REDACTED', error_text, flags=re.IGNORECASE)
 
     # Truncate to max length
     if len(sanitized) > max_length:
@@ -459,7 +459,7 @@ async def generate_image(params: GenerateImageInput) -> str:
     except Exception as e:
         return json.dumps({
             "success": False,
-            "error": str(e),
+            "error": sanitize_error_response(str(e)),
             "error_type": type(e).__name__
         }, indent=2)
 
@@ -531,7 +531,7 @@ async def list_files(params: ListFilesInput) -> str:
     except Exception as e:
         return json.dumps({
             "success": False,
-            "error": str(e),
+            "error": sanitize_error_response(str(e)),
             "error_type": type(e).__name__
         }, indent=2)
 
@@ -650,7 +650,7 @@ async def upload_file(params: UploadFileInput) -> str:
     except Exception as e:
         return json.dumps({
             "success": False,
-            "error": str(e),
+            "error": sanitize_error_response(str(e)),
             "error_type": type(e).__name__
         }, indent=2)
 
@@ -700,7 +700,7 @@ async def delete_file(params: DeleteFileInput) -> str:
     except Exception as e:
         return json.dumps({
             "success": False,
-            "error": str(e),
+            "error": sanitize_error_response(str(e)),
             "error_type": type(e).__name__
         }, indent=2)
 
