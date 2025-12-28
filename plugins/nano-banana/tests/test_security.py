@@ -126,3 +126,29 @@ def test_upload_file_rejects_large_files():
 
     # 10MB file should be accepted
     validate_file_size(10 * 1024 * 1024)  # Should not raise
+
+
+def test_validate_file_size_negative():
+    """Test that negative file sizes are rejected."""
+    from nanobanana_mcp import validate_file_size
+
+    with pytest.raises(ValueError, match="cannot be negative"):
+        validate_file_size(-1)
+
+    with pytest.raises(ValueError, match="cannot be negative"):
+        validate_file_size(-1000)
+
+
+def test_validate_file_size_boundary():
+    """Test exact boundary conditions."""
+    from nanobanana_mcp import validate_file_size, MAX_FILE_SIZE
+
+    # Exactly at limit - should pass
+    validate_file_size(MAX_FILE_SIZE)
+
+    # One byte over - should fail
+    with pytest.raises(ValueError, match="File too large"):
+        validate_file_size(MAX_FILE_SIZE + 1)
+
+    # Zero bytes - should pass
+    validate_file_size(0)

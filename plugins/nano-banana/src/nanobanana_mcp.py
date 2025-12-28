@@ -248,8 +248,11 @@ def validate_file_size(file_size: int, max_size: int = MAX_FILE_SIZE) -> None:
         max_size: Maximum allowed size (default: MAX_FILE_SIZE)
 
     Raises:
-        ValueError: If file exceeds size limit
+        ValueError: If file exceeds size limit or is negative
     """
+    if file_size < 0:
+        raise ValueError("Invalid file size: cannot be negative")
+
     if file_size > max_size:
         raise ValueError(
             f"File too large: {file_size:,} bytes "
@@ -716,10 +719,10 @@ async def upload_file(params: UploadFileInput) -> str:
                 "error": f"File not found: {file_path}"
             }, indent=2)
 
-        file_data = file_path.read_bytes()
-        file_size = len(file_data)
+        # Get file size WITHOUT reading entire file into memory
+        file_size = file_path.stat().st_size
 
-        # Validate file size
+        # Validate file size BEFORE loading into memory
         try:
             validate_file_size(file_size)
         except ValueError as e:
@@ -727,6 +730,9 @@ async def upload_file(params: UploadFileInput) -> str:
                 "success": False,
                 "error": str(e)
             }, indent=2)
+
+        # NOW read file data (only after validation passes)
+        file_data = file_path.read_bytes()
 
         # Determine MIME type
         mime_types = {
