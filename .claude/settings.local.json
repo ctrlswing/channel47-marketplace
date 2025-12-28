@@ -22,7 +22,13 @@
       "Skill(superpowers:systematic-debugging)",
       "WebFetch(domain:docs.anthropic.com)",
       "WebSearch",
-      "WebFetch(domain:docs.claude.com)"
+      "WebFetch(domain:docs.claude.com)",
+      "Bash(pytest:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(mv:*)",
+      "Bash(cp:*)",
+      "Bash(python -m py_compile:*)",
+      "Bash(test:*)"
     ]
   }
 }
