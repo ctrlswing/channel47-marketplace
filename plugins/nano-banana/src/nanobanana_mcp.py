@@ -34,7 +34,6 @@ from pathlib import Path
 from datetime import datetime
 
 # Module-level constants
-CHARACTER_LIMIT = 25000
 GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta"
 
 # File upload limits
@@ -93,14 +92,6 @@ class SafetyLevel(str, Enum):
     MODERATE = "MODERATE"  # BLOCK_MEDIUM_AND_ABOVE - Balanced filtering
     PERMISSIVE = "PERMISSIVE"  # BLOCK_ONLY_HIGH - Minimal filtering
     OFF = "OFF"  # BLOCK_NONE - No filtering (may be overridden by API)
-
-
-class MediaResolution(str, Enum):
-    """Output resolution settings."""
-    LOW = "LOW"
-    MEDIUM = "MEDIUM"
-    HIGH = "HIGH"
-    AUTO = "AUTO"
 
 
 class GenerateImageInput(BaseModel):
@@ -322,35 +313,6 @@ def get_safety_settings(safety_level: SafetyLevel) -> list[dict]:
         {"category": category, "threshold": threshold}
         for category in harm_categories
     ]
-
-
-def get_aspect_dimensions(aspect_ratio: AspectRatio) -> tuple[int, int]:
-    """Get pixel dimensions for aspect ratio."""
-    dimensions = {
-        AspectRatio.SQUARE: (1024, 1024),
-        AspectRatio.LANDSCAPE: (1920, 1080),
-        AspectRatio.PORTRAIT: (1080, 1920),
-        AspectRatio.CINEMATIC: (2520, 1080),
-        AspectRatio.CLASSIC: (1365, 1024),
-        AspectRatio.VERTICAL: (1024, 1365),
-        AspectRatio.WIDE: (2048, 1024),
-    }
-    return dimensions.get(aspect_ratio, (1024, 1024))
-
-
-def truncate_response(data: str, message: str = "") -> str:
-    """Truncate response if it exceeds CHARACTER_LIMIT."""
-    if len(data) <= CHARACTER_LIMIT:
-        return data
-
-    truncation_notice = (
-        f"\n\n[RESPONSE TRUNCATED]\n"
-        f"Original size: {len(data):,} characters\n"
-        f"Truncated to: {CHARACTER_LIMIT:,} characters\n"
-        f"{message}"
-    )
-
-    return data[:CHARACTER_LIMIT - len(truncation_notice)] + truncation_notice
 
 
 def save_image(image_data: bytes, output_path: str) -> str:
