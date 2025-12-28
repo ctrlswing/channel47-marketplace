@@ -2,12 +2,13 @@
 import pytest
 import re
 import sys
+import tempfile
 from pathlib import Path
 
 # Add src directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from nanobanana_mcp import sanitize_error_response
+from nanobanana_mcp import sanitize_error_response, save_image
 
 
 def test_sanitize_api_key_from_url():
@@ -60,3 +61,40 @@ def test_sanitize_in_exception_messages():
 
     assert "SECRET" not in result
     assert "key=REDACTED" in result
+
+
+def test_save_image_prevents_traversal():
+    """Test that path traversal is prevented."""
+    # Attempt to write outside safe directories
+    with pytest.raises(ValueError, match="Invalid output path"):
+        save_image(b"test", "/etc/passwd")
+
+    # Try to escape to a system directory using enough traversal
+    # This will resolve to /etc/passwd which is outside home/cwd
+    import os
+    deep_path = "../" * 20 + "etc/passwd"
+    with pytest.raises(ValueError, match="Invalid output path"):
+        save_image(b"test", deep_path)
+
+
+def test_save_image_allows_home_directory():
+    """Test that writing to home directory is allowed."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        home_path = Path.home() / "test_image.png"
+        # This should succeed without raising
+        # (we'll clean it up in the test)
+        try:
+            result = save_image(b"test", str(home_path))
+            assert Path(result).exists()
+        finally:
+            if home_path.exists():
+                home_path.unlink()
+
+
+def test_save_image_allows_cwd():
+    """Test that writing to current directory is allowed."""
+    import os
+    with tempfile.TemporaryDirectory() as tmpdir:
+        os.chdir(tmpdir)
+        result = save_image(b"test", "test_image.png")
+        assert Path(result).exists()

@@ -274,8 +274,40 @@ def truncate_response(data: str, message: str = "") -> str:
 
 
 def save_image(image_data: bytes, output_path: str) -> str:
-    """Save image data to file."""
+    """
+    Save image data to file with path validation.
+
+    Args:
+        image_data: Image bytes to save
+        output_path: Destination path (must be within home or cwd)
+
+    Returns:
+        Absolute path to saved file
+
+    Raises:
+        ValueError: If path is invalid or attempts traversal
+    """
     path = Path(output_path).expanduser().resolve()
+
+    # Validate path is within safe directories
+    safe_dirs = [Path.home(), Path.cwd()]
+    is_safe = False
+
+    for safe_dir in safe_dirs:
+        try:
+            # Check if path is relative to safe directory
+            path.relative_to(safe_dir)
+            is_safe = True
+            break
+        except ValueError:
+            # Not relative to this safe directory, try next
+            continue
+
+    if not is_safe:
+        raise ValueError(
+            f"Invalid output path: must be within home directory or current working directory. "
+            f"Attempted: {path}"
+        )
 
     # Create parent directories if needed
     path.parent.mkdir(parents=True, exist_ok=True)
