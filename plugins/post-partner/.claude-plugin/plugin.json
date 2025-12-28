@@ -1,0 +1,13 @@
+{
+  "name": "post-partner",
+  "version": "1.0.0",
+  "description": "A thought partner for turning raw material into posts worth sharing",
+  "author": {
+    "name": "Jackson",
+    "url": "https://channel47.dev"
+  },
+  "homepage": "https://channel47.dev/plugins/post-partner",
+  "repository": "https://github.com/ctrlswing/channel47-marketplace",
+  "license": "MIT",
+  "keywords": ["writing", "posts", "content", "thinking", "briefs"]
+}

@@ -7,15 +7,15 @@
   "description": "Battle-tested Claude Code plugins from daily workflows",
   "plugins": [
     {
-      "name": "creative-writing",
-      "source": "./plugins/creative-writing",
-      "description": "Writing assistant for editing, generating, and improving prose",
+      "name": "post-partner",
+      "source": "./plugins/post-partner",
+      "description": "A thought partner for turning raw material into posts worth sharing",
       "version": "1.0.0",
       "author": {
         "name": "Jackson"
       },
       "category": "writing",
-      "tags": ["writing", "editing", "prose", "creative"]
+      "tags": ["writing", "posts", "content", "thinking", "briefs", "social"]
     },
     {
       "name": "google-ads",
