@@ -8,6 +8,9 @@ AI-powered image generation using Google's Nano Banana Pro (Gemini 3 Pro Image) 
   - **Pro Tier**: Uses `gemini-3-pro-image-preview` for professional 4K quality and complex prompt adherence
   - **Flash Tier**: Uses `gemini-2.5-flash-image` for lightning-fast (2-3s) generation and draft iterations
 - **Smart Model Selection**: Automatically chooses the right model based on your prompt (e.g., "quick sketch" vs "4k professional photo")
+- **Future-Ready Architecture**: Code prepared for multiple image generation (currently limited to 1 by Gemini API)
+- **Reproducible Generation**: Use seed values for consistent results across multiple generations
+- **Content Safety Controls**: Four-level safety filtering (STRICT, MODERATE, PERMISSIVE, OFF)
 - **Google Search Grounding**: Generate factually accurate images using Google Search
 - **Aspect Ratio Control**: Support for various formats (16:9, 1:1, 9:16, etc.)
 - **Advanced Reasoning**: Configurable "thinking" levels for complex prompts
@@ -72,6 +75,36 @@ Or try:
 ```
 "Quick sketch of a robot"
 ```
+
+### Reproducible Generation
+```
+"Generate an image of a sunset with seed 42 for consistent results"
+```
+
+### Custom Safety Level
+```
+"Generate artistic portrait with moderate safety filtering"
+```
+
+## Advanced Parameters
+
+### Number of Images
+**Current Status**: The Gemini image generation API currently only supports generating 1 image per request. The `number_of_images` parameter is implemented in the code for future compatibility but is limited to 1 by the API.
+
+Note: Google's separate [Imagen API](https://ai.google.dev/gemini-api/docs/imagen) does support generating multiple images (1-4) per request if you need that capability.
+
+### Safety Filtering
+Control content filtering with four levels:
+- **STRICT** (default): Maximum filtering, blocks most potentially sensitive content
+- **MODERATE**: Balanced filtering, suitable for general use
+- **PERMISSIVE**: Minimal filtering, more creative freedom
+- **OFF**: No filtering (may be overridden by API based on account tier)
+
+### Seed Value
+Ensure reproducible results:
+- `seed`: Integer value for deterministic generation
+- Same seed + same prompt = consistent output
+- Useful for iterating on specific results
 
 ## Model Selection
 

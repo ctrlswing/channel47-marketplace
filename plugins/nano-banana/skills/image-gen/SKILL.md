@@ -104,6 +104,9 @@ generate_image(
   prompt="enhanced prompt here",
   model_tier="auto|flash|pro",
   aspect_ratio="1:1|16:9|9:16|21:9",
+  number_of_images=1-4,  # Generate multiple variations
+  safety_level="STRICT|MODERATE|PERMISSIVE|OFF",
+  seed=12345,  # For reproducible results
   thinking_level="LOW|HIGH",
   use_grounding=false|true,
   output_path="/path/to/save.png"
@@ -150,6 +153,24 @@ Enable for:
 - Famous people or characters
 - Historical events
 - Scientific accuracy
+
+### Advanced Parameters
+
+**Number of Images (1-4):**
+- Generate multiple variations in one request
+- Useful for A/B testing or exploring different interpretations
+- Each image gets a separate output entry
+
+**Safety Level:**
+- `STRICT` (default): Maximum content filtering
+- `MODERATE`: Balanced filtering for general use
+- `PERMISSIVE`: Minimal filtering, more creative freedom
+- `OFF`: No filtering (may be overridden by API)
+
+**Seed (Reproducibility):**
+- Use same seed value for consistent results
+- Helpful for iterating on a specific generation
+- Example: `seed=42` produces the same image each time
 
 ## Tips for Complex Generations
 

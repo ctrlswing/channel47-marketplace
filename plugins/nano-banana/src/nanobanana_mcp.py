@@ -143,9 +143,9 @@ class GenerateImageInput(BaseModel):
     )
     number_of_images: int = Field(
         default=1,
-        description="Number of images to generate (1-4). Multiple images will be returned as separate outputs.",
+        description="Number of images to generate. Note: Currently limited to 1 by Gemini API. Multiple image generation is not yet supported by gemini-2.5-flash-image or gemini-3-pro-image-preview models.",
         ge=1,
-        le=4
+        le=1  # API limitation - only 1 supported currently
     )
     safety_level: SafetyLevel = Field(
         default=SafetyLevel.STRICT,
@@ -438,8 +438,10 @@ async def generate_image(params: GenerateImageInput) -> str:
         # Build generation config
         generation_config = {
             "responseModalities": ["TEXT", "IMAGE"],
-            "aspectRatio": params.aspect_ratio.value,
             "candidateCount": params.number_of_images,
+            "imageConfig": {
+                "aspectRatio": params.aspect_ratio.value
+            }
         }
 
         # Add seed if specified for reproducible generation
@@ -509,7 +511,7 @@ async def generate_image(params: GenerateImageInput) -> str:
 
             result = response.json()
 
-        # Extract image from response
+        # Extract images from response (handle multiple candidates)
         candidates = result.get("candidates", [])
         if not candidates:
             return json.dumps({
@@ -519,50 +521,76 @@ async def generate_image(params: GenerateImageInput) -> str:
                 "selection_reason": selection_reason
             }, indent=2)
 
-        # Look for image data in response
-        content = candidates[0].get("content", {})
-        parts = content.get("parts", [])
+        # Process all candidates to collect images
+        outputs = []
+        text_responses = []
 
-        image_data = None
-        text_response = None
+        for candidate_idx, candidate in enumerate(candidates):
+            content = candidate.get("content", {})
+            parts = content.get("parts", [])
 
-        for part in parts:
-            if "inlineData" in part:
-                image_data = part["inlineData"]
-            elif "text" in part:
-                text_response = part["text"]
+            image_data = None
+            text_response = None
 
-        if not image_data:
+            for part in parts:
+                if "inlineData" in part:
+                    image_data = part["inlineData"]
+                elif "text" in part:
+                    text_response = part["text"]
+
+            # Collect text responses
+            if text_response:
+                text_responses.append(text_response)
+
+            # Skip if no image data in this candidate
+            if not image_data:
+                continue
+
+            # Handle output for this image
+            mime_type = image_data.get("mimeType", "image/png")
+            base64_data = image_data.get("data", "")
+
+            if params.output_path:
+                # Save to file with index if multiple images
+                image_bytes = base64.b64decode(base64_data)
+
+                # Generate indexed filename for multiple images
+                if len(candidates) > 1:
+                    # Insert index before extension
+                    output_path = Path(params.output_path)
+                    stem = output_path.stem
+                    suffix = output_path.suffix or '.png'
+                    parent = output_path.parent
+                    indexed_filename = f"{stem}_{candidate_idx + 1}{suffix}"
+                    indexed_path = str(parent / indexed_filename) if str(parent) != '.' else indexed_filename
+                else:
+                    indexed_path = params.output_path
+
+                saved_path = save_image(image_bytes, indexed_path)
+                outputs.append({
+                    "index": candidate_idx + 1,
+                    "saved_to": saved_path,
+                    "file_size_bytes": len(image_bytes)
+                })
+            else:
+                # Return base64 data (truncated for display)
+                outputs.append({
+                    "index": candidate_idx + 1,
+                    "mime_type": mime_type,
+                    "base64_preview": base64_data[:100] + "..." if len(base64_data) > 100 else base64_data,
+                    "data_length": len(base64_data),
+                    "note": "Full base64 data available. Specify output_path to save to file."
+                })
+
+        # Check if we got any images
+        if not outputs:
             return json.dumps({
                 "success": False,
-                "error": "No image data in response",
-                "text_response": text_response,
+                "error": "No image data found in any candidates",
+                "text_responses": text_responses,
                 "model_used": model,
                 "selection_reason": selection_reason
             }, indent=2)
-
-        # Handle output
-        mime_type = image_data.get("mimeType", "image/png")
-        base64_data = image_data.get("data", "")
-
-        output_info = {}
-
-        if params.output_path:
-            # Save to file
-            image_bytes = base64.b64decode(base64_data)
-            saved_path = save_image(image_bytes, params.output_path)
-            output_info = {
-                "saved_to": saved_path,
-                "file_size_bytes": len(image_bytes)
-            }
-        else:
-            # Return base64 data (truncated for display)
-            output_info = {
-                "mime_type": mime_type,
-                "base64_preview": base64_data[:100] + "..." if len(base64_data) > 100 else base64_data,
-                "data_length": len(base64_data),
-                "note": "Full base64 data available. Specify output_path to save to file."
-            }
 
         return json.dumps({
             "success": True,
@@ -570,10 +598,14 @@ async def generate_image(params: GenerateImageInput) -> str:
             "selection_reason": selection_reason,
             "prompt": params.prompt,
             "aspect_ratio": params.aspect_ratio.value,
+            "number_of_images": params.number_of_images,
+            "images_generated": len(outputs),
+            "safety_level": params.safety_level.value,
+            "seed": params.seed,
             "thinking_level": params.thinking_level.value if params.thinking_level else None,
             "grounding_enabled": params.use_grounding,
-            "text_response": text_response,
-            "output": output_info
+            "text_responses": text_responses if text_responses else None,
+            "outputs": outputs
         }, indent=2)
 
     except Exception as e:

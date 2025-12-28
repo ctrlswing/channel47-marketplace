@@ -5,6 +5,39 @@ All notable changes to the Nano Banana Pro plugin will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-12-28
+
+### Added
+- **Future-Ready Architecture**: New `number_of_images` parameter implemented for future API support (currently limited to 1 by Gemini API)
+- **Content Safety Controls**: New `safety_level` parameter with four filtering levels:
+  - `STRICT` (default): Maximum content filtering (BLOCK_LOW_AND_ABOVE)
+  - `MODERATE`: Balanced filtering (BLOCK_MEDIUM_AND_ABOVE)
+  - `PERMISSIVE`: Minimal filtering (BLOCK_ONLY_HIGH)
+  - `OFF`: No filtering (BLOCK_NONE, may be overridden by API)
+- **Reproducible Generation**: New `seed` parameter for deterministic image generation
+- Safety settings mapping function to convert user-friendly levels to Gemini API format
+
+### Changed
+- Updated `GenerateImageInput` model with new optional parameters
+- Enhanced generation config to include `candidateCount` and `seed` values
+- All API requests now include explicit safety settings
+- Fixed `aspectRatio` parameter structure (now correctly nested in `imageConfig`)
+
+### Known Limitations
+- **Multiple Images**: Gemini image models (gemini-2.5-flash-image, gemini-3-pro-image-preview) currently only support `candidateCount=1`. Google's separate Imagen API does support multiple images if needed.
+- The code is architected to support multiple images when/if the Gemini API adds this capability
+
+### Documentation
+- Added examples for multiple image generation, seed usage, and safety levels
+- Updated README.md with Advanced Parameters section
+- Updated SKILL.md with detailed parameter documentation
+- Enhanced usage examples in documentation
+
+## [1.1.1] - 2025-12-28
+
+### Fixed
+- Fixed bug where `aspect_ratio` parameter was being ignored by the API because it was missing from the generation configuration.
+
 ## [1.1.0] - 2025-12-28
 
 ### Changed
