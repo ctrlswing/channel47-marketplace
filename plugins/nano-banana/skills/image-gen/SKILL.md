@@ -113,6 +113,36 @@ generate_image(
 )
 ```
 
+### Using Reference Images
+
+When user provides or wants to use a reference image:
+
+**With uploaded file:**
+```
+generate_image(
+  prompt="Your detailed prompt describing desired output",
+  reference_file_uri="files/abc123",  # URI from upload_file
+  reference_file_mime_type="image/png",
+  model_tier="pro",  # Pro model recommended for reference-based generation
+  ...other params
+)
+```
+
+**With base64 data:**
+```
+generate_image(
+  prompt="Your detailed prompt",
+  reference_image_base64="iVBORw0KGg...",  # Base64 string
+  reference_file_mime_type="image/jpeg",
+  ...other params
+)
+```
+
+**Tips for reference-based generation:**
+- Use specific prompts describing what to change from the reference
+- Pro model generally handles references better than Flash
+- Reference helps maintain brand consistency for marketing materials
+
 ### Step 5: Handle Result
 
 **On Success:**

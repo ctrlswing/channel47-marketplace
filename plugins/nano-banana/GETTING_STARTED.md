@@ -110,6 +110,29 @@ python ~/.claude/plugins/cache/channel47/nano-banana/*/scripts/test_auth.py
 "Quick sketch of a robot assistant"
 ```
 
+### Reference-Based Generation
+
+Generate images inspired by reference materials to maintain consistent style or composition:
+
+#### Option 1: Upload Reference File
+
+1. Upload your reference image:
+```
+"Upload my-style-reference.jpg to use for generation"
+```
+
+2. Generate with reference:
+```
+"Generate a product photo similar to the uploaded reference, but with a water bottle instead of a coffee mug"
+```
+
+#### Option 2: Direct Base64 (Advanced)
+
+For programmatic use, you can provide base64-encoded image data directly. The reference image helps maintain:
+- Consistent visual style
+- Similar composition and framing
+- Brand consistency across generated images
+
 ## Available Tools
 
 ### generate_image

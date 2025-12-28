@@ -86,6 +86,24 @@ Or try:
 "Generate artistic portrait with moderate safety filtering"
 ```
 
+### With Reference Image
+Generate images inspired by reference materials:
+
+```
+"Use this product photo as reference and generate a similar composition with a coffee mug"
+```
+
+The plugin supports two ways to provide reference images:
+1. **Upload a file first** using `upload_file`, then use the returned URI
+2. **Provide base64-encoded image data** directly in the prompt
+
+For file-based references:
+```
+"Upload reference.jpg for style matching"
+# Then after upload succeeds:
+"Generate an image with the same style as the uploaded reference"
+```
+
 ## Advanced Parameters
 
 ### Number of Images
