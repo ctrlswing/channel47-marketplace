@@ -57,7 +57,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Thinking level configuration (LOW/HIGH)
   - Google Search grounding support
   - File output option
-- `quick_generate` tool for simplified generation with smart defaults
 - `list_files` tool for viewing uploaded files
 - `upload_file` tool for adding files to Gemini Files API
 - `delete_file` tool for removing uploaded files
@@ -74,3 +73,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Async HTTP client (httpx) for API communication
 - Pydantic models for input validation
 - Comprehensive error handling and reporting
+
+### Note
+- The `quick_generate` tool mentioned in early documentation was never implemented in the initial release
