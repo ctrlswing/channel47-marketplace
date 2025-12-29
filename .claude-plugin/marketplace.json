@@ -86,6 +86,28 @@
         "creative",
         "google"
       ]
+    },
+    {
+      "name": "copywriters-arsenal",
+      "source": "./plugins/copywriters-arsenal",
+      "description": "Master copywriting combining storyteller craft (Homer, Hemingway, Dickens) with direct response mastery (Schwartz, Halbert, Ogilvy)",
+      "version": "1.0.0",
+      "author": {
+        "name": "Jackson"
+      },
+      "category": "writing",
+      "tags": [
+        "copywriting",
+        "sales-copy",
+        "direct-response",
+        "storytelling",
+        "marketing",
+        "headlines",
+        "email-sequences",
+        "landing-pages",
+        "persuasion",
+        "conversion"
+      ]
     }
   ]
 }

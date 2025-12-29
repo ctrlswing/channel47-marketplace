@@ -1,0 +1,24 @@
+{
+  "name": "copywriters-arsenal",
+  "version": "1.0.0",
+  "description": "Master copywriting combining storyteller craft with direct response mastery. Fuse the emotional power of Homer, Hemingway, and Dickens with the conversion science of Schwartz, Halbert, and Ogilvy.",
+  "author": {
+    "name": "Jackson",
+    "url": "https://channel47.dev"
+  },
+  "homepage": "https://channel47.dev/plugins/copywriters-arsenal",
+  "repository": "https://github.com/ctrlswing/channel47-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "copywriting",
+    "sales-copy",
+    "direct-response",
+    "storytelling",
+    "marketing",
+    "conversion",
+    "headlines",
+    "email-sequences",
+    "landing-pages",
+    "persuasion"
+  ]
+}
