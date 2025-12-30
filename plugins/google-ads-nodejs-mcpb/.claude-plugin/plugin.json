@@ -1,0 +1,8 @@
+{
+  "name": "google-ads-nodejs",
+  "version": "1.0.0",
+  "description": "Query Google Ads data using GAQL with OAuth 2.0 authentication (Node.js MCPB)",
+  "repository": "https://github.com/ctrlswing/channel47-marketplace",
+  "keywords": ["google-ads", "advertising", "analytics", "gaql", "mcp", "mcpb"],
+  "license": "MIT"
+}
