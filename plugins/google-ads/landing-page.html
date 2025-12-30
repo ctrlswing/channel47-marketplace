@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Ads Agent for Agencies | Channel 47</title>
+    <meta name="description" content="Stop logging into 50 dashboards. Ask Claude about your Google Ads accounts in plain English.">
+
+    <style>
+        /* ============================================
+           CSS RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --color-bg: #0a0a0b;
+            --color-bg-elevated: #141416;
+            --color-bg-card: #1a1a1f;
+            --color-border: #2a2a30;
+            --color-text: #e4e4e7;
+            --color-text-muted: #71717a;
+            --color-text-dim: #52525b;
+            --color-accent: #3b82f6;
+            --color-accent-hover: #2563eb;
+            --color-accent-glow: rgba(59, 130, 246, 0.15);
+            --color-success: #22c55e;
+            --color-warning: #f59e0b;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --max-width: 720px;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2.5rem;
+            --spacing-xl: 4rem;
+            --spacing-2xl: 6rem;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        h1, h2, h3 {
+            line-height: 1.3;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: var(--spacing-md);
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-accent);
+        }
+
+        p {
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-muted);
+        }
+
+        strong {
+            color: var(--color-text);
+            font-weight: 600;
+        }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--color-accent-hover);
+        }
+
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        section {
+            padding: var(--spacing-2xl) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        /* ============================================
+           HEADER / NAV
+           ============================================ */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: var(--spacing-sm) 0;
+            background: rgba(10, 10, 11, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--color-accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .nav-cta {
+            padding: 0.6rem 1.2rem;
+            background: var(--color-accent);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--color-accent-hover);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .hero-content {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .hero h1 {
+            color: var(--color-text);
+            max-width: 600px;
+        }
+
+        .hero-tagline {
+            font-size: 1.35rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+            max-width: 520px;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+            color: var(--color-text-dim);
+        }
+
+        .meta-item svg {
+            width: 16px;
+            height: 16px;
+            color: var(--color-success);
+        }
+
+        /* ============================================
+           PAIN SECTION
+           ============================================ */
+        .pain-sequence {
+            background: var(--color-bg-elevated);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border: 1px solid var(--color-border);
+        }
+
+        .pain-intro {
+            font-size: 1.1rem;
+            color: var(--color-text);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .pain-steps {
+            list-style: none;
+            counter-reset: pain-counter;
+        }
+
+        .pain-steps li {
+            counter-increment: pain-counter;
+            padding: 0.5rem 0;
+            padding-left: 2.5rem;
+            position: relative;
+            color: var(--color-text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        .pain-steps li::before {
+            content: counter(pain-counter) ".";
+            position: absolute;
+            left: 0;
+            color: var(--color-text-dim);
+        }
+
+        .pain-punchline {
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--color-border);
+            color: var(--color-warning);
+            font-style: italic;
+        }
+
+        /* ============================================
+           SOLUTION SECTION
+           ============================================ */
+        .solution-examples {
+            background: var(--color-bg-card);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border: 1px solid var(--color-border);
+            font-family: var(--font-mono);
+        }
+
+        .example-query {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.95rem;
+        }
+
+        .example-query:last-child {
+            border-bottom: none;
+        }
+
+        .example-query::before {
+            content: "→ ";
+            color: var(--color-accent);
+        }
+
+        .solution-point {
+            color: var(--color-text);
+            font-size: 1.1rem;
+            margin-top: var(--spacing-md);
+        }
+
+        /* ============================================
+           AGENTS SECTION
+           ============================================ */
+        .agents-grid {
+            display: grid;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .agent-card {
+            background: var(--color-bg-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-md);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .agent-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        .agent-name {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .agent-query {
+            font-style: italic;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .agent-desc {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* ============================================
+           AFTER STATE SECTION
+           ============================================ */
+        .after-state {
+            background: linear-gradient(135deg, var(--color-bg-elevated) 0%, var(--color-bg-card) 100%);
+            border-radius: 16px;
+            padding: var(--spacing-xl);
+            margin: var(--spacing-lg) 0;
+            border: 1px solid var(--color-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .after-state::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-success));
+        }
+
+        .after-heading {
+            font-size: 1.1rem;
+            color: var(--color-text-dim);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .after-list {
+            list-style: none;
+            margin: var(--spacing-md) 0;
+        }
+
+        .after-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.75rem;
+            position: relative;
+            color: var(--color-text);
+        }
+
+        .after-list li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--color-accent);
+        }
+
+        .after-punchline {
+            font-size: 1.2rem;
+            color: var(--color-text);
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .after-punchline strong {
+            color: var(--color-accent);
+        }
+
+        /* ============================================
+           REQUIREMENTS SECTION
+           ============================================ */
+        .requirements {
+            background: var(--color-bg);
+        }
+
+        .requirements-intro {
+            font-size: 1.1rem;
+            color: var(--color-text);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .requirements-list {
+            list-style: none;
+            margin: var(--spacing-md) 0;
+        }
+
+        .requirements-list li {
+            padding: 0.6rem 0;
+            padding-left: 2rem;
+            position: relative;
+            color: var(--color-text-muted);
+        }
+
+        .requirements-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-success);
+            font-weight: bold;
+        }
+
+        .requirements-note {
+            background: var(--color-bg-elevated);
+            border-left: 3px solid var(--color-accent);
+            padding: var(--spacing-sm) var(--spacing-md);
+            margin-top: var(--spacing-md);
+            font-size: 0.95rem;
+        }
+
+        /* ============================================
+           CTA SECTION
+           ============================================ */
+        .cta-section {
+            background: var(--color-bg-elevated);
+            text-align: center;
+            padding: var(--spacing-2xl) 0;
+        }
+
+        .cta-section h2 {
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .cta-subtitle {
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .email-form {
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .email-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            background: var(--color-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            color: var(--color-text);
+            font-size: 1rem;
+            font-family: var(--font-sans);
+            transition: border-color 0.2s ease;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        .email-input::placeholder {
+            color: var(--color-text-dim);
+        }
+
+        .submit-btn {
+            padding: 1rem 1.75rem;
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: var(--font-sans);
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .submit-btn:hover {
+            background: var(--color-accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .form-note {
+            font-size: 0.85rem;
+            color: var(--color-text-dim);
+        }
+
+        .form-success {
+            display: none;
+            padding: var(--spacing-md);
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--color-success);
+            border-radius: 8px;
+            color: var(--color-success);
+        }
+
+        .form-success.visible {
+            display: block;
+        }
+
+        /* ============================================
+           PS SECTION
+           ============================================ */
+        .ps-section {
+            background: var(--color-bg);
+            padding: var(--spacing-xl) 0;
+        }
+
+        .ps-content {
+            max-width: 600px;
+        }
+
+        .ps-item {
+            margin-bottom: var(--spacing-md);
+            padding-left: var(--spacing-md);
+            border-left: 2px solid var(--color-border);
+        }
+
+        .ps-label {
+            font-weight: 600;
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .ps-item p {
+            margin: 0;
+            color: var(--color-text-muted);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            padding: var(--spacing-lg) 0;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+        }
+
+        .footer-content {
+            color: var(--color-text-dim);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            margin-top: var(--spacing-sm);
+        }
+
+        .footer-links a {
+            color: var(--color-text-muted);
+            margin: 0 var(--spacing-sm);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 640px) {
+            body {
+                font-size: 16px;
+            }
+
+            section {
+                padding: var(--spacing-xl) 0;
+            }
+
+            .hero {
+                min-height: auto;
+                padding-top: 100px;
+                padding-bottom: var(--spacing-xl);
+            }
+
+            .form-group {
+                flex-direction: column;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: var(--spacing-xs);
+            }
+
+            .after-state {
+                padding: var(--spacing-lg);
+            }
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+    </style>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-inner">
+            <div class="logo">
+                <span class="logo-icon">47</span>
+                <span>Channel 47</span>
+            </div>
+            <a href="#get-access" class="nav-cta">Get Access</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1 class="animate-in">You didn't start an agency to become a dashboard jockey.</h1>
+            <p class="hero-tagline animate-in delay-1">
+                But here you are. Fifty accounts. Fifty logins. Fifty chances to miss something that matters.
+            </p>
+            <div class="hero-meta animate-in delay-2">
+                <span class="meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Free forever
+                </span>
+                <span class="meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Uses your existing API access
+                </span>
+                <span class="meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    10 minute setup
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Section -->
+    <section id="problem">
+        <div class="container">
+            <h2>You know the drill.</h2>
+            <p>Client calls. "How's our ROAS this week?"</p>
+            <p>You say "Let me check." Then you:</p>
+
+            <div class="pain-sequence">
+                <ol class="pain-steps">
+                    <li>Log into Google Ads</li>
+                    <li>Switch to their account</li>
+                    <li>Set the date range</li>
+                    <li>Squint at numbers</li>
+                    <li>Open a spreadsheet</li>
+                    <li>Remember you forgot to check Search Terms</li>
+                    <li>Start over</li>
+                </ol>
+                <p class="pain-punchline">
+                    Meanwhile, the thing that's actually costing them money? It's been running for six days. Nobody noticed.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="solution">
+        <div class="container">
+            <h2>What if you could just... ask?</h2>
+
+            <div class="solution-examples">
+                <div class="example-query">"Which of my clients overspent yesterday?"</div>
+                <div class="example-query">"Show me search terms with spend but no conversions across all accounts."</div>
+                <div class="example-query">"What changed in the Johnson account this week?"</div>
+            </div>
+
+            <p class="solution-point">
+                And get answers. Instantly. In plain English.<br>
+                No dashboards. No GAQL. No context-switching.<br>
+                <strong>Just the answer.</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- Product Section -->
+    <section id="product">
+        <div class="container">
+            <h2>Google Ads Agent for Claude</h2>
+            <p>
+                You already have API access. You already have credentials.<br>
+                This gives you something you don't have: <strong>leverage</strong>.
+            </p>
+            <p>
+                Connect once. Then talk to your accounts like they're a person who actually knows what's going on.
+            </p>
+            <p style="margin-top: var(--spacing-md);">
+                <em>Built by an agency owner. For agency owners.<br>
+                Because I was tired of being a dashboard jockey too.</em>
+            </p>
+        </div>
+    </section>
+
+    <!-- Agents Section -->
+    <section id="agents">
+        <div class="container">
+            <h2>What's included</h2>
+
+            <div class="agents-grid">
+                <div class="agent-card">
+                    <div class="agent-name">Negative Keyword Hunter</div>
+                    <div class="agent-query">"Find wasted spend across all my accounts."</div>
+                    <p class="agent-desc">Surfaces search terms burning money. Prioritized by cost. Ready to add as negatives.</p>
+                </div>
+
+                <div class="agent-card">
+                    <div class="agent-name">Budget Pacing Monitor</div>
+                    <div class="agent-query">"Who's underspending this month?"</div>
+                    <p class="agent-desc">Catch pacing issues before clients ask why they didn't spend their budget.</p>
+                </div>
+
+                <div class="agent-card">
+                    <div class="agent-name">Performance Anomaly Alert</div>
+                    <div class="agent-query">"What changed dramatically in the last 7 days?"</div>
+                    <p class="agent-desc">CPA spikes. CTR drops. The stuff that used to blindside you.</p>
+                </div>
+
+                <div class="agent-card">
+                    <div class="agent-name">Raw GAQL Access</div>
+                    <div class="agent-query">For when you need it.</div>
+                    <p class="agent-desc">Full query access when you want to go deeper. But now you won't need it as often.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- After State Section -->
+    <section id="after">
+        <div class="container">
+            <div class="after-state">
+                <p class="after-heading">Picture this:</p>
+                <h2 style="margin-bottom: var(--spacing-sm);">Monday morning. Coffee in hand.</h2>
+                <p>You ask: "Give me a health check on all accounts."</p>
+                <p style="margin-bottom: var(--spacing-sm);">Thirty seconds later, you know:</p>
+
+                <ul class="after-list">
+                    <li>Who's pacing behind</li>
+                    <li>Where spend is being wasted</li>
+                    <li>What anomalies need attention</li>
+                    <li>Which clients are crushing it</li>
+                </ul>
+
+                <p class="after-punchline">
+                    No logging in. No tabs. No spreadsheets. Just clarity.<br>
+                    That's what this gives you. The one thing you can't get more of: <strong>time</strong>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section id="requirements" class="requirements">
+        <div class="container">
+            <h2>This is not for everyone.</h2>
+            <p class="requirements-intro">You need:</p>
+
+            <ul class="requirements-list">
+                <li>A Google Ads MCC account</li>
+                <li>API access (Basic level or higher)</li>
+                <li>Claude Desktop or Claude Code</li>
+                <li>10 minutes for setup</li>
+            </ul>
+
+            <div class="requirements-note">
+                <strong>If you're already using the Google Ads API, you're 10 minutes away.</strong><br>
+                If you're not, this isn't for you yet.
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="get-access" class="cta-section">
+        <div class="container">
+            <h2>Get the Google Ads Agent.</h2>
+            <p class="cta-subtitle">Free. No catch. Just an email so I can send you updates when I ship new agents.</p>
+
+            <form class="email-form" id="signup-form">
+                <div class="form-group">
+                    <input
+                        type="email"
+                        class="email-input"
+                        placeholder="you@agency.com"
+                        required
+                        id="email-input"
+                    >
+                    <button type="submit" class="submit-btn">Get Access</button>
+                </div>
+                <p class="form-note">Setup takes 10 minutes. You'll wonder why you waited.</p>
+            </form>
+
+            <div class="form-success" id="form-success">
+                <strong>You're in.</strong> Check your email for download instructions and setup guide.
+            </div>
+        </div>
+    </section>
+
+    <!-- PS Section -->
+    <section class="ps-section">
+        <div class="container ps-content">
+            <div class="ps-item">
+                <p class="ps-label">P.S.</p>
+                <p>I built this because I manage 30+ accounts and got tired of the dashboard shuffle. It's free because I want to build something agencies actually use. If you have feedback, reply to the welcome email. I read every one.</p>
+            </div>
+
+            <div class="ps-item">
+                <p class="ps-label">P.P.S.</p>
+                <p>Next up: GA4 Agent and Search Console Agent. Get on the list and you'll be first to know.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; 2025 Channel 47. Built for agencies who value their time.</p>
+            <div class="footer-links">
+                <a href="https://channel47.dev">channel47.dev</a>
+                <a href="https://github.com/ctrlswing/channel47-marketplace">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // FORM HANDLING
+        // ============================================
+        const form = document.getElementById('signup-form');
+        const emailInput = document.getElementById('email-input');
+        const successMessage = document.getElementById('form-success');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = emailInput.value.trim();
+
+            if (!email) return;
+
+            // In production, you'd send this to your email service
+            // For now, simulate success
+            console.log('Email submitted:', email);
+
+            // Store in localStorage as backup
+            const submissions = JSON.parse(localStorage.getItem('gads-agent-signups') || '[]');
+            submissions.push({ email, timestamp: new Date().toISOString() });
+            localStorage.setItem('gads-agent-signups', JSON.stringify(submissions));
+
+            // Show success
+            form.style.display = 'none';
+            successMessage.classList.add('visible');
+
+            // Track conversion (placeholder for analytics)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'sign_up', { event_category: 'engagement' });
+            }
+        });
+
+        // ============================================
+        // SCROLL ANIMATIONS
+        // ============================================
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for fade-in
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+
+        // Make hero visible immediately
+        document.querySelector('.hero').style.opacity = '1';
+        document.querySelector('.hero').style.transform = 'translateY(0)';
+
+        // ============================================
+        // SMOOTH SCROLL FOR ANCHOR LINKS
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ============================================
+        // HEADER SCROLL EFFECT
+        // ============================================
+        let lastScroll = 0;
+        const header = document.querySelector('header');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                header.style.boxShadow = '0 1px 20px rgba(0, 0, 0, 0.3)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+
+            lastScroll = currentScroll;
+        });
+    </script>
+</body>
+</html>
