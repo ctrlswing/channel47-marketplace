@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__google_ads__(query|mutate)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ${CLAUDE_PROJECT_DIR}/.claude/hooks/validate-google-ads.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
