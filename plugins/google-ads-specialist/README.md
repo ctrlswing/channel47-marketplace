@@ -4,8 +4,10 @@ A Claude Code plugin for Google Ads campaign management using GAQL (Google Ads Q
 
 ## Architecture
 
-**Version 3.0.0** introduces a simplified architecture:
+**Version 3.1.0** introduces npm-based MCP server distribution:
 
+- **NPM Package**: MCP server published as `@channel47/google-ads-mcp`
+- **Auto-Installation**: Server installed via npx on first use
 - **3 Core MCP Tools**: Minimal data access layer (list_accounts, query, mutate)
 - **9 Skill Files**: Progressive disclosure of Google Ads domain knowledge
 - **PreToolUse Hook**: Validates skill reference before query/mutate operations
@@ -13,7 +15,7 @@ A Claude Code plugin for Google Ads campaign management using GAQL (Google Ads Q
 
 ### Design Philosophy
 
-The MCP server is a **thin data access layer**. All Google Ads domain knowledge lives in skill files:
+The MCP server is distributed as a standalone npm package and automatically installed when the plugin is activated. The plugin provides:
 - **Atomic Skills** (7): Single-operation patterns (performance, search terms, QS, budget, negatives, bids, wasted spend)
 - **Playbooks** (1): Multi-step workflows (account health audit)
 - **Troubleshooting** (1): Error handling and debugging (GAQL errors)
@@ -40,23 +42,28 @@ Claude references skill files to learn proper GAQL patterns, then executes via t
 
 ### As a Claude Code Plugin
 
-Install via the Claude Code plugin marketplace or manually:
+Install via the Claude Code plugin marketplace:
+
+1. Open Claude Code
+2. Navigate to Plugin Marketplace
+3. Search for "Google Ads Specialist"
+4. Click Install
+
+The plugin will automatically install the required MCP server (`@channel47/google-ads-mcp`) via npx when first activated.
+
+**Manual Installation:**
 
 1. Clone this repository
-2. Build the plugin: `npm run build`
-3. Copy `dist/plugin/` to your Claude Code plugins directory
-4. Configure OAuth credentials (see GETTING_STARTED.md)
+2. Copy to your Claude Code plugins directory: `~/.claude/plugins/google-ads-specialist`
+3. Configure OAuth credentials (see GETTING_STARTED.md)
 
-### For Development
-
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Set environment variables (see Configuration)
-4. Run the server: `npm start`
+The MCP server is distributed as an npm package and installed automatically. No manual server setup required.
 
 ## Configuration
 
-Required environment variables:
+The MCP server requires these environment variables. Configure them before activating the plugin:
+
+**Required:**
 
 | Variable | Description |
 |----------|-------------|
@@ -73,6 +80,8 @@ Optional:
 | `GOOGLE_ADS_DEFAULT_CUSTOMER_ID` | Default account ID for queries |
 
 See `GETTING_STARTED.md` for OAuth setup instructions.
+
+**Note:** The MCP server (`@channel47/google-ads-mcp`) is automatically installed via npx. You do not need to manually install it.
 
 ## Core MCP Tools
 
@@ -250,34 +259,30 @@ skills/
 
 ## Development
 
-### Build
+This plugin uses the `@channel47/google-ads-mcp` npm package for the MCP server.
 
-Build both plugin and standalone skills packages:
-```bash
-npm run build
-```
+### Plugin Development
 
-Output:
-- `dist/plugin/` - Full Claude Code plugin bundle
-- `dist/standalone-skills/` - Skills-only package for Claude Desktop users
+To modify skills or documentation:
+
+1. Clone this repository
+2. Edit skill files in `skills/`
+3. Update documentation as needed
+4. Test locally by copying to `~/.claude/plugins/google-ads-specialist`
+
+### MCP Server Development
+
+The MCP server is developed separately at [github.com/channel47/google-ads-mcp-server](https://github.com/channel47/google-ads-mcp-server).
+
+To test with a local server build:
+1. Clone the server repository
+2. Update `.mcp.json` to point to local server: `"command": "node", "args": ["/path/to/server/index.js"]`
+3. Restore npx command before committing
 
 ### Publish to Marketplace
 
 ```bash
 npm run publish-to-marketplace
-```
-
-Publishes to `../channel47-marketplace/plugins/google-ads-specialist/`
-
-### Testing
-
-Run server in development mode:
-```bash
-GOOGLE_ADS_DEVELOPER_TOKEN=xxx \
-GOOGLE_ADS_CLIENT_ID=xxx \
-GOOGLE_ADS_CLIENT_SECRET=xxx \
-GOOGLE_ADS_REFRESH_TOKEN=xxx \
-node server/index.js
 ```
 
 ## Migration from v2.x
@@ -304,6 +309,8 @@ Version 3.0.0 is a **breaking change**:
 
 - [Getting Started Guide](GETTING_STARTED.md)
 - [Changelog](CHANGELOG.md)
+- [MCP Server (npm)](https://www.npmjs.com/package/@channel47/google-ads-mcp)
+- [MCP Server (GitHub)](https://github.com/channel47/google-ads-mcp-server)
 - [Google Ads API Docs](https://developers.google.com/google-ads/api/docs/start)
 - [GAQL Reference](https://developers.google.com/google-ads/api/docs/query/overview)
 - [Claude Code Documentation](https://code.claude.com/docs)

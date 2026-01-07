@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:developers.google.com)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(node:*)",
+      "Bash(for dir in */)",
+      "Bash(done)",
+      "Bash(python3:*)",
+      "Bash(echo:*)"
+    ]
+  }
+}

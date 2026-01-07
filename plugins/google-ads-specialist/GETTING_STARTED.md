@@ -11,6 +11,19 @@ Before you begin, ensure you have:
 3. **A Google Cloud project** with OAuth 2.0 configured
 4. **An MCC (Manager) account** if querying multiple accounts
 
+## Quick Start
+
+If you've already configured Google Ads API access:
+
+1. Install the plugin via Claude Code Marketplace
+2. The MCP server (`@channel47/google-ads-mcp`) will auto-install via npx
+3. Set your environment variables (see Step 4)
+4. Start using the plugin
+
+The first time you activate the plugin, npx will download and cache the MCP server. Subsequent uses will be instant.
+
+**If this is your first time:** Follow the complete setup guide below.
+
 ## Step 1: Google Cloud Project Setup
 
 ### 1.1 Create or Select a Project
@@ -173,43 +186,27 @@ export GOOGLE_ADS_CLIENT_SECRET="GOCSPX-your_client_secret"
 export GOOGLE_ADS_REFRESH_TOKEN="1//0your_refresh_token"
 ```
 
-## Step 5: Install Dependencies
+## Step 5: Verify Installation
 
-```bash
-cd plugins/google-ads-nodejs-mcpb
-npm install
-```
+After setting environment variables:
 
-## Step 6: Test the Server
+1. Open Claude Code
+2. Start a new conversation
+3. The plugin should auto-activate when Google Ads topics are mentioned
+4. Check Claude Code logs for "google-ads-mcp v1.0.0 started"
 
-### Quick Test
+The MCP server is automatically managed by Claude Code. No manual server commands needed.
 
-```bash
-npm start
-```
-
-You should see startup logs. The server is now waiting for MCP connections.
+**The first time:** npx will download and install `@channel47/google-ads-mcp` automatically. This takes 3-5 seconds. Subsequent activations are instant (cached).
 
 ### Test with Claude Code
 
-1. Restart Claude Code to load the new MCP server
-2. Try commands that reference skills:
-   - "List my Google Ads accounts"
-   - "Use the campaign-performance skill to show my top campaigns for the last 30 days"
-   - "Reference the wasted-spend-analysis skill and find opportunities to save money"
+Try commands that reference skills:
+- "List my Google Ads accounts"
+- "Use the campaign-performance skill to show my top campaigns for the last 30 days"
+- "Reference the wasted-spend-analysis skill and find opportunities to save money"
 
 **Note:** The `query` and `mutate` tools require skill references. Claude will automatically reference the appropriate skill file before executing operations.
-
-## Step 7: Pack as MCPB (Optional)
-
-To distribute as an MCPB bundle:
-
-```bash
-npm install -g @anthropic-ai/mcpb
-mcpb pack .
-```
-
-This creates a `.mcpb` file ready for installation in compatible MCP hosts.
 
 ## Troubleshooting
 

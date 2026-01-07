@@ -5,6 +5,64 @@ All notable changes to the Google Ads Specialist Plugin will be documented in th
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2026-01-07
+
+### Changed
+
+**Distribution Model:**
+- MCP server now distributed as npm package `@channel47/google-ads-mcp`
+- Server auto-installed via npx when plugin is activated
+- No manual server installation required
+- Server version independent of plugin version
+
+**Plugin Structure:**
+- Removed `server/` directory from plugin
+- Skills remain in plugin (`skills/` directory)
+- Hook validation remains in plugin (`.claude/hooks/`)
+- Plugin now focused on skills and documentation
+
+**Configuration:**
+- `.mcp.json` updated to use `npx @channel47/google-ads-mcp@latest`
+- Environment variables still configured at plugin level
+- No changes to OAuth setup process
+
+**Documentation:**
+- Updated README for npm distribution model
+- Updated GETTING_STARTED with npx workflow
+- Added links to npm package and server repository
+
+### Technical Details
+
+**NPM Package:**
+- Package name: `@channel47/google-ads-mcp`
+- Distribution: npm registry
+- Auto-installation: `npx -y @channel47/google-ads-mcp@latest`
+- Independent versioning: Server v1.0.0, Plugin v3.1.0
+
+**Plugin Changes:**
+- Removed dependencies from package.json (handled by npm package)
+- Removed server-related npm scripts
+- Version bumped to 3.1.0 (minor - backward compatible)
+
+**Benefits:**
+- ✅ Automatic server updates (using @latest)
+- ✅ No npm install needed for plugin users
+- ✅ Smaller plugin download size
+- ✅ Faster plugin updates (skills-only)
+- ✅ Independent server development cycle
+
+### Migration from 3.0.0
+
+**No action required for users:**
+- Environment variables unchanged
+- Skills unchanged
+- Workflow unchanged
+
+**For developers:**
+- Server code now at [github.com/channel47/google-ads-mcp-server](https://github.com/channel47/google-ads-mcp-server)
+- Plugin code remains in marketplace repository
+- Test locally by pointing `.mcp.json` to local server build
+
 ## [3.0.0] - 2026-01-07
 
 ### 🚨 BREAKING CHANGES
