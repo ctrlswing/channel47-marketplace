@@ -1,4 +1,4 @@
-# File: plugins/nano-banana/tests/test_utils.py
+# File: plugins/creative-designer/tests/test_utils.py
 """Tests for utility functions in nanobanana_mcp."""
 
 import pytest

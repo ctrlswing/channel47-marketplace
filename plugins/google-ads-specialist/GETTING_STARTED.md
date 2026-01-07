@@ -15,7 +15,7 @@ This guide walks through the complete setup process for the Google Ads plugin.
 - **Optional but Recommended:** Publish OAuth consent screen to Production mode
   - Testing mode: Tokens expire after 7 days (requires re-authentication)
   - Production mode: Tokens work indefinitely
-  - See `/google-ads:setup` wizard for detailed publishing instructions
+  - See `/google-ads-specialist:setup` wizard for detailed publishing instructions
   - Can't find publish controls? Proceed anyway - tokens work for 7+ days
 
 ### 3. Developer Token
@@ -27,7 +27,7 @@ This guide walks through the complete setup process for the Google Ads plugin.
 Install the plugin from the channel47 marketplace:
 
 ```bash
-/plugin install google-ads@channel47
+/plugin install google-ads-specialist@channel47
 ```
 
 ## Configuration
@@ -67,7 +67,7 @@ If you prefer to configure manually, add these to `~/.claude/settings.json`:
 Test your configuration:
 
 ```bash
-python ~/.claude/plugins/google-ads/scripts/test_auth.py
+python ~/.claude/plugins/google-ads-specialist/scripts/test_auth.py
 ```
 
 Or simply try:
@@ -143,4 +143,4 @@ The MCP server uses efficient querying patterns to stay within limits.
 - Learn GAQL query patterns for custom analysis
 - Set up recurring checks for search term optimization
 
-For more examples and guides, visit [channel47.dev/plugins/google-ads](https://channel47.dev/plugins/google-ads)
+For more examples and guides, visit [channel47.dev/plugins/google-ads-specialist](https://channel47.dev/plugins/google-ads-specialist)

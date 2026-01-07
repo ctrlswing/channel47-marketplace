@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "google-ads": {
+    "google-ads-specialist": {
       "command": "python3",
       "args": ["${CLAUDE_PLUGIN_ROOT}/src/google_ads_mcp.py"]
     }

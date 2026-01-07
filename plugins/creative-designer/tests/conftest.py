@@ -1,4 +1,4 @@
-"""Pytest configuration and fixtures for nano-banana tests."""
+"""Pytest configuration and fixtures for creative-designer tests."""
 
 import pytest
 import os

@@ -1,4 +1,4 @@
-# File: plugins/nano-banana/tests/test_security.py
+# File: plugins/creative-designer/tests/test_security.py
 import pytest
 import re
 import sys

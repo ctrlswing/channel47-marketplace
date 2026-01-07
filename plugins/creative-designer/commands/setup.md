@@ -114,7 +114,7 @@ For changes to take effect:
 2. Run: claude
 3. Resume your session: /resume
 
-The nano-banana plugin will be ready to use!
+The creative-designer plugin will be ready to use!
 ```
 
 ## Phase 6: Verification
@@ -161,7 +161,7 @@ Aspect Ratios:
 - 9:16  - Portrait (Stories, TikTok)
 
 Need help? Check the README or ask:
-  "How do I use nano-banana?"
+  "How do I use creative-designer?"
 
 Happy generating!
 =================================================================

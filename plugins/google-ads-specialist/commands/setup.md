@@ -120,7 +120,7 @@ Your OAuth app can be in two modes:
 **Should you publish?**
 
 ✅ **PUBLISH if:** You want permanent tokens without re-authentication
-⚠️ **SKIP if:** You're okay regenerating tokens every 7 days (takes ~2 minutes with `/google-ads:setup`)
+⚠️ **SKIP if:** You're okay regenerating tokens every 7 days (takes ~2 minutes with `/google-ads-specialist:setup`)
 
 **How to Publish:**
 
@@ -140,7 +140,7 @@ Try:
 **Option C: Skip publishing for now**
 - Proceed with setup as-is
 - Your tokens will work for 7+ days
-- When they expire, re-run `/google-ads:setup` (Phase 5 only, ~2 minutes)
+- When they expire, re-run `/google-ads-specialist:setup` (Phase 5 only, ~2 minutes)
 - Token regeneration is much faster than initial setup
 
 ---
@@ -152,7 +152,7 @@ Try:
 - Authentication failures after 7+ days
 
 **Quick Fix (2 minutes):**
-1. Run: `/google-ads:setup`
+1. Run: `/google-ads-specialist:setup`
 2. Skip to Phase 5 (Generate Refresh Token)
 3. Copy new `GOOGLE_ADS_REFRESH_TOKEN` to your settings
 4. Restart Claude Code
@@ -611,7 +611,7 @@ This will help identify which file has the credentials and which file Claude Cod
 ### Error: "invalid_grant"
 **Cause:** Refresh token is invalid or expired
 **Fix:**
-- Re-run this setup wizard: `/google-ads:setup`
+- Re-run this setup wizard: `/google-ads-specialist:setup`
 - Make sure OAuth consent screen is "Published" (not "Testing")
 - Testing mode tokens expire after 7 days
 
@@ -646,6 +646,6 @@ This will help identify which file has the credentials and which file Claude Cod
 ## Support
 
 Need help?
-- Documentation: https://channel47.dev/plugins/google-ads
+- Documentation: https://channel47.dev/plugins/google-ads-specialist
 - Re-run setup: `/setup`
-- Test credentials: `python ~/.claude/plugins/google-ads/scripts/test_auth.py`
+- Test credentials: `python ~/.claude/plugins/google-ads-specialist/scripts/test_auth.py`

@@ -17,7 +17,7 @@ This guide walks through the complete setup process for AI-powered image generat
 Install the plugin from the channel47 marketplace:
 
 ```bash
-/plugin install nano-banana@channel47
+/plugin install creative-designer@channel47
 ```
 
 ## Configuration
@@ -49,7 +49,7 @@ Edit `~/.claude/settings.json`:
 
 Run the interactive setup:
 ```
-/nano-banana:setup
+/creative-designer:setup
 ```
 
 ### Step 3: Restart Claude Code
@@ -69,7 +69,7 @@ Test your configuration:
 
 Or run the test script:
 ```bash
-python ~/.claude/plugins/cache/channel47/nano-banana/*/scripts/test_auth.py
+python ~/.claude/plugins/cache/channel47/creative-designer/*/scripts/test_auth.py
 ```
 
 ## Usage Examples
@@ -269,4 +269,4 @@ The MCP server handles rate limiting automatically.
 - Experiment with style modifiers
 - Upload reference images for inspiration
 
-For more examples and guides, visit [channel47.dev/plugins/nano-banana](https://channel47.dev/plugins/nano-banana)
+For more examples and guides, visit [channel47.dev/plugins/creative-designer](https://channel47.dev/plugins/creative-designer)

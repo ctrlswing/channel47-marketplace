@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "nano-banana": {
+    "creative-designer": {
       "command": "python3",
       "args": ["${CLAUDE_PLUGIN_ROOT}/src/nanobanana_mcp.py"]
     }
